@@ -13,10 +13,12 @@ typealias DirectoryReceiver = (DirectoryResult) -> Void
 
 struct Directory {
     let root: URL
+    let children: [URL]
 }
 
 enum FileError: Error {
     case generic
+    case noDirectoryContents
 }
 
 func openFile(_ receiver: @escaping FileReceiver) {
@@ -51,9 +53,18 @@ func openDirectory(_ receiver: @escaping DirectoryReceiver) {
                 return
             }
             
+            guard let contents = try? FileManager.default.contentsOfDirectory(
+                at: directoryUrl,
+                includingPropertiesForKeys: nil,
+                options: .skipsSubdirectoryDescendants
+            ) else {
+                receiver(.failure(.noDirectoryContents))
+                return
+            }
+            
             receiver(
                 .success(
-                    Directory(root: directoryUrl)
+                    Directory(root: directoryUrl, children: contents)
                 )
             )
         }

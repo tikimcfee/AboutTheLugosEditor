@@ -6,27 +6,72 @@ struct EditorView: View {
     @EnvironmentObject var editorState: ArticleEditorState
     
     var body: some View {
-        VStack {
-            HStack {
-                TextEditor(text: $editorState.articleBody)
-                    .frame(minWidth: 300.0, minHeight: 320.0)
-                    .font(.custom("Menlo", fixedSize: 12))
-                    .padding()
-            }
-            
-            HStack {
-                Button("Open Article") {
-                    openDirectory(editorState.receiveDirectory)
-                }
+        VStack(spacing: 0) {
+            TextEditor(text: $editorState.articleBody)
+                .frame(minHeight: 240, maxHeight: .infinity)
+                .font(.custom("Menlo", fixedSize: 12))
                 .padding()
+            
+            HStack(alignment: .bottom, spacing: 0) {
+                VStack {
+                    Button("Open Article") {
+                        openDirectory(editorState.receiveDirectory)
+                    }
+                    .keyboardShortcut("o", modifiers: [.command])
+                }
+                Spacer()
+                VStack(alignment: .trailing, spacing: 4) {
+                    labeledText("Title:", editorState.articleName)
+                    labeledText("ID:", editorState.articleId)
+                    summary("Summary:", editorState.articleSummary)
+                }
+                .padding(4)
+                
             }
+            .padding()
+        }
+    }
+    
+    private func labeledText(_ name: String, _ value: String) -> some View {
+        HStack(alignment: .top) {
+            Text(name)
+                .bold()
+            Spacer()
+                .frame(width: 16.0)
+            Text(value)
+                .italic()
+                .frame(width: 256, alignment: .leading)
+        }
+    }
+    
+    private func summary(_ name: String, _ value: String) -> some View {
+        HStack(alignment: .top) {
+            Text(name)
+                .bold()
+            Spacer()
+                .frame(width: 16.0)
+            ScrollView {
+                Text(value)
+                    .italic()
+                    .frame(width: 256, alignment: .leading)
+            }
+            .frame(maxHeight: 48)
         }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
+    static let test: ArticleEditorState = {
+        let state = ArticleEditorState()
+        var summary = ""
+        (0...256).forEach { _ in summary.append("x") }
+        state.articleSummary = summary
+        return state
+    }()
+    
     static var previews: some View {
         EditorView()
-            .environmentObject(ArticleEditorState())
+            .previewLayout(/*@START_MENU_TOKEN@*/.fixed(width: /*@START_MENU_TOKEN@*/910.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/768.0/*@END_MENU_TOKEN@*/)/*@END_MENU_TOKEN@*/)
+            .environmentObject(test)
     }
 }
