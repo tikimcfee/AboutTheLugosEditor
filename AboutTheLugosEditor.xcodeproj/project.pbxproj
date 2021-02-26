@@ -13,6 +13,7 @@
 		B710AC7025E74DA60044B8F4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B710AC6F25E74DA60044B8F4 /* Preview Assets.xcassets */; };
 		B7841F8025E76BC900063927 /* VaporLugos in Frameworks */ = {isa = PBXBuildFile; productRef = B7841F7F25E76BC900063927 /* VaporLugos */; };
 		B7C38AC125E8820C00189689 /* ArticleEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC025E8820C00189689 /* ArticleEditorState.swift */; };
+		B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		B710AC7125E74DA60044B8F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B710AC7225E74DA60044B8F4 /* AboutTheLugosEditor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AboutTheLugosEditor.entitlements; sourceTree = "<group>"; };
 		B7C38AC025E8820C00189689 /* ArticleEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleEditorState.swift; sourceTree = "<group>"; };
+		B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUrlProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				B7C38AC025E8820C00189689 /* ArticleEditorState.swift */,
+				B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 			files = (
 				B710AC6B25E74DA50044B8F4 /* EditorView.swift in Sources */,
 				B7C38AC125E8820C00189689 /* ArticleEditorState.swift in Sources */,
+				B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */,
 				B710AC6925E74DA50044B8F4 /* AboutTheLugosEditorApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
