@@ -12,7 +12,7 @@ typealias DirectoryResult = Result<Directory, FileError>
 typealias DirectoryReceiver = (DirectoryResult) -> Void
 
 struct Directory {
-    let childUrls: [URL]
+    let root: URL
 }
 
 enum FileError: Error {
@@ -50,17 +50,12 @@ func openDirectory(_ receiver: @escaping DirectoryReceiver) {
                 receiver(.failure(.generic))
                 return
             }
-
-            guard let contents = try? FileManager.default.contentsOfDirectory(
-                at: directoryUrl,
-                includingPropertiesForKeys: nil,
-                options: .skipsSubdirectoryDescendants
-            ) else {
-                receiver(.failure(.generic))
-                return
-            }
             
-            receiver(.success((Directory(childUrls: contents))))
+            receiver(
+                .success(
+                    Directory(root: directoryUrl)
+                )
+            )
         }
     }
 }

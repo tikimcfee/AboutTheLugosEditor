@@ -10,21 +10,16 @@ struct EditorView: View {
             HStack {
                 TextEditor(text: $editorState.articleBody)
                     .frame(minWidth: 300.0, minHeight: 320.0)
+                    .font(.custom("Menlo", fixedSize: 12))
+                    .padding()
             }
+            
             HStack {
                 Button("Open Article") {
-                    openDirectory(receiveDirectory)
+                    openDirectory(editorState.receiveDirectory)
                 }
+                .padding()
             }
-        }
-    }
-    
-    func receiveDirectory(_ result: DirectoryResult) {
-        switch result {
-        case .success(let directory):
-            print(directory.childUrls)
-        case .failure(let error):
-            print(error)
         }
     }
 }
