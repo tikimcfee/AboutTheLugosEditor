@@ -7,10 +7,14 @@ struct EditorView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            TextEditor(text: $editorState.articleBody)
-                .frame(minHeight: 240, maxHeight: .infinity)
-                .font(.custom("Menlo", fixedSize: 12))
-                .padding()
+            HStack {
+                TextEditor(text: $editorState.articleBody)
+                    .frame(minHeight: 240, maxHeight: .infinity)
+                    .font(.custom("Menlo", fixedSize: 12))
+                
+                MarkdownHtmlView(htmlContent: $editorState.articleHTML)
+            }
+            .padding()
             
             HStack(alignment: .bottom, spacing: 0) {
                 VStack(alignment: .trailing, spacing: 4) {
@@ -38,7 +42,6 @@ struct EditorView: View {
             Spacer()
                 .frame(width: 16.0)
             Text(value)
-                .italic()
                 .frame(width: 256, alignment: .leading)
         }
     }
@@ -51,7 +54,6 @@ struct EditorView: View {
                 .frame(width: 16.0)
             ScrollView {
                 Text(value)
-                    .italic()
                     .frame(width: 256, alignment: .leading)
             }
             .frame(maxHeight: 64)
@@ -62,9 +64,13 @@ struct EditorView: View {
 struct ContentView_Previews: PreviewProvider {
     static let test: ArticleEditorState = {
         let state = ArticleEditorState()
+        
         var summary = ""
         (0...256).forEach { _ in summary.append("x") }
         state.articleSummary = summary
+        
+        state.articleBody = "# Hello, world!"
+        
         return state
     }()
     

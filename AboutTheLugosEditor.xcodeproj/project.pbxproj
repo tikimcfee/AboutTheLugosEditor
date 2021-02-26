@@ -11,6 +11,7 @@
 		B710AC6B25E74DA50044B8F4 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710AC6A25E74DA50044B8F4 /* EditorView.swift */; };
 		B710AC6D25E74DA60044B8F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B710AC6C25E74DA60044B8F4 /* Assets.xcassets */; };
 		B710AC7025E74DA60044B8F4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B710AC6F25E74DA60044B8F4 /* Preview Assets.xcassets */; };
+		B74FB75625E8E480000AB1F1 /* MarkdownHtmlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB75525E8E480000AB1F1 /* MarkdownHtmlView.swift */; };
 		B7841F8025E76BC900063927 /* VaporLugos in Frameworks */ = {isa = PBXBuildFile; productRef = B7841F7F25E76BC900063927 /* VaporLugos */; };
 		B7C38AC125E8820C00189689 /* ArticleEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC025E8820C00189689 /* ArticleEditorState.swift */; };
 		B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */; };
@@ -24,6 +25,7 @@
 		B710AC6F25E74DA60044B8F4 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		B710AC7125E74DA60044B8F4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B710AC7225E74DA60044B8F4 /* AboutTheLugosEditor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AboutTheLugosEditor.entitlements; sourceTree = "<group>"; };
+		B74FB75525E8E480000AB1F1 /* MarkdownHtmlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownHtmlView.swift; sourceTree = "<group>"; };
 		B7C38AC025E8820C00189689 /* ArticleEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleEditorState.swift; sourceTree = "<group>"; };
 		B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUrlProvider.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -76,12 +78,21 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
+		B74FB75825E8E483000AB1F1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B710AC6A25E74DA50044B8F4 /* EditorView.swift */,
+				B74FB75525E8E480000AB1F1 /* MarkdownHtmlView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		B77C86FD25E75EA800A939F1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				B7C38ABF25E881FD00189689 /* Models */,
 				B710AC6825E74DA50044B8F4 /* AboutTheLugosEditorApp.swift */,
-				B710AC6A25E74DA50044B8F4 /* EditorView.swift */,
+				B74FB75825E8E483000AB1F1 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -170,6 +181,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B74FB75625E8E480000AB1F1 /* MarkdownHtmlView.swift in Sources */,
 				B710AC6B25E74DA50044B8F4 /* EditorView.swift in Sources */,
 				B7C38AC125E8820C00189689 /* ArticleEditorState.swift in Sources */,
 				B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */,
