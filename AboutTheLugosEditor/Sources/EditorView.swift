@@ -6,26 +6,25 @@ struct EditorView: View {
     @EnvironmentObject var editorState: ArticleEditorState
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(alignment: .leading, spacing: 0) {
             TextEditor(text: $editorState.articleBody)
                 .frame(minHeight: 240, maxHeight: .infinity)
                 .font(.custom("Menlo", fixedSize: 12))
                 .padding()
             
             HStack(alignment: .bottom, spacing: 0) {
+                VStack(alignment: .trailing, spacing: 4) {
+                    labeledText("Title:", editorState.articleName)
+                    labeledText("ID:", editorState.articleId)
+                    summary("Summary:", editorState.articleSummary)
+                }
+                Spacer()
                 VStack {
                     Button("Open Article") {
                         openDirectory(editorState.receiveDirectory)
                     }
                     .keyboardShortcut("o", modifiers: [.command])
                 }
-                Spacer()
-                VStack(alignment: .trailing, spacing: 4) {
-                    labeledText("Title:", editorState.articleName)
-                    labeledText("ID:", editorState.articleId)
-                    summary("Summary:", editorState.articleSummary)
-                }
-                .padding(4)
                 
             }
             .padding()
@@ -55,7 +54,7 @@ struct EditorView: View {
                     .italic()
                     .frame(width: 256, alignment: .leading)
             }
-            .frame(maxHeight: 48)
+            .frame(maxHeight: 64)
         }
     }
 }
