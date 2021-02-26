@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "VaporLugos",
+        "repositoryURL": "https://github.com/tikimcfee/AboutTheLugosSwiftly/",
+        "state": {
+          "branch": "master",
+          "revision": "b6837dd789f9c6ed69cb42f505676fa1fbbf241f",
+          "version": null
+        }
+      },
+      {
+        "package": "Ink",
+        "repositoryURL": "https://github.com/johnsundell/ink.git",
+        "state": {
+          "branch": null,
+          "revision": "bd223a2482449507bd3286cb262c962d32d81e4b",
+          "version": "0.5.0"
+        }
+      },
+      {
+        "package": "CSS",
+        "repositoryURL": "https://github.com/tikimcfee/swift-css",
+        "state": {
+          "branch": "master",
+          "revision": "aa3853673acc6b5344b59c9858ba4971e930b27b",
+          "version": null
+        }
+      },
+      {
+        "package": "Html",
+        "repositoryURL": "https://github.com/pointfreeco/swift-html.git",
+        "state": {
+          "branch": null,
+          "revision": "3ffc3fc8feb5fde766f5f44fd06ebc030f0721f3",
+          "version": "0.3.1"
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": null,
+          "revision": "c466812aa2e22898f27557e2e780d3aad7a27203",
+          "version": "1.8.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
