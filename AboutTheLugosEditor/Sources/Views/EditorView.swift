@@ -8,10 +8,18 @@ struct EditorView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
-                TextEditor(text: $editorState.articleBody)
-                    .frame(minHeight: 240, maxHeight: .infinity)
-                    .font(.custom("Menlo", fixedSize: 12))
-                
+                ZStack(alignment: .bottomTrailing) {
+                    TextEditor(text: $editorState.articleBody)
+                        .frame(minHeight: 240, maxHeight: .infinity)
+                        .font(.custom("Menlo", fixedSize: 12))
+                    
+                    Button("Commit") {
+                        editorState.saveArticleChangesRequested()
+                    }
+                    .keyboardShortcut("s", modifiers: [.command])
+                    .disabled(editorState.saveButtonDisabled)
+                    .padding()
+                }
                 MarkdownHtmlView(htmlContent: $editorState.articleHTML)
             }
             .padding()
@@ -23,11 +31,13 @@ struct EditorView: View {
                     summary("Summary:", editorState.articleSummary)
                 }
                 Spacer()
-                VStack {
+                VStack(alignment: .trailing) {
                     Button("Open Article") {
                         openDirectory(editorState.receiveDirectory)
                     }
                     .keyboardShortcut("o", modifiers: [.command])
+                    
+                    
                 }
                 
             }

@@ -10,7 +10,6 @@ struct MarkdownHtmlView: NSViewRepresentable {
     typealias NSViewType = WKWebView
     
     @Binding var htmlContent: String
-    var lastHtmlContent: String?
     
     func makeNSView(context: Context) -> WKWebView {
         let coordinator = context.coordinator

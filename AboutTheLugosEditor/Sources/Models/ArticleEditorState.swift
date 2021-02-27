@@ -5,6 +5,10 @@ import Ink
 
 public class ArticleEditorState: ObservableObject {
     
+    public enum StateError: String, Error {
+        case noFileToSave
+    }
+    
     private let markdownQueue = DispatchQueue(label: "MarkdownProcessor", qos: .userInteractive)
     private let markdownParser = MarkdownParser()
     private var cancellables = Set<AnyCancellable>()
@@ -15,20 +19,31 @@ public class ArticleEditorState: ObservableObject {
     @Published var articleId: String = "(no id)"
     
     // Article content and converted HTML
-    private var originalBody: String = ""
+    private var sourceFile: ArticleFile?
+    @Published private var originalBody: String = ""
     @Published var articleBody: String = ""
     @Published var articleHTML: String = ""
+    @Published var saveButtonDisabled: Bool = false
     
     // Public error to preview in a window
-    @Published var receiveError: Error? = nil
+    @Published var receiveError: Error?
     
     init() {
+        // Map markdown to HTML
         $articleBody
             .receive(on: markdownQueue)
-            .map { self.markdownParser.html(from: $0) }
+            .map    (articleBodyUpdated)
             .receive(on: DispatchQueue.main)
-            .sink { self.articleHTML = $0 }
-            .store(in: &cancellables)
+            .sink   {
+                (self.articleHTML, self.saveButtonDisabled) = $0
+            }
+            .store  (in: &cancellables)
+        
+        // If the original body changes, we turn off changes. This is fragile.
+        $originalBody
+            .receive(on: DispatchQueue.main)
+            .sink   { _ in self.saveButtonDisabled = true}
+            .store  (in: &cancellables)
     }
     
     func receiveDirectory(_ result: DirectoryResult) {
@@ -36,28 +51,46 @@ public class ArticleEditorState: ObservableObject {
             var state = ArticleSniffState()
             if let fileModel = try state.makeFrom(urls: try result.get().children) {
                 let fileContents = try fileModel.articleContents()
-                setPublishedState(body: fileContents, with: fileModel.meta)
+                setPublishedState(body: fileContents, with: fileModel)
             }
         } catch {
             receiveError = error
         }
     }
     
-    private func setPublishedState(body: String, with meta: ArticleMeta) {
-        objectWillChange.send()
-        articleName = meta.name
-        articleSummary = meta.summary
-        articleId = meta.id
-        originalBody = body
-        articleBody = body
+    private func articleBodyUpdated(_ updatedBody: String) -> (String, Bool) {
+        let html = markdownParser.html(from: updatedBody)
+        
+        let disableSaveButton = sourceFile == nil
+            || updatedBody == originalBody
+        
+        return (html, disableSaveButton)
     }
     
-    func saveCurrent(to path: URL) {
-        // TODO: save article.md a and meta.json to a new 
-    }
-    
-    func load(from path: URL) {
-        // TODO: read a file and set internal fields
+    func saveArticleChangesRequested() {
+        guard let file = sourceFile else {
+            receiveError = StateError.noFileToSave
+            return
+        }
+        
+        do {
+            try articleBody.write(toFile: file.articleFilePath.path,
+                                  atomically: true, encoding: .utf8)
+            originalBody = articleBody
+        } catch {
+            receiveError = error
+        }
     }
 }
 
+private extension ArticleEditorState {
+    private func setPublishedState(body: String, with file: ArticleFile) {
+        objectWillChange.send()
+        sourceFile = file
+        articleName = file.meta.name
+        articleSummary = file.meta.summary
+        articleId = file.meta.id
+        originalBody = body // updates canSave state via publisher
+        articleBody = body  // updates htmlBody via publisher
+    }
+}
