@@ -1,9 +1,31 @@
 import SwiftUI
 import Combine
 
+class LolBomb: ObservableObject {
+    @Published var string: String = ""
+    
+    init() {
+        loop()
+    }
+    
+    func loop() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 500 ) {
+            self.string += "Hello, World! \(DispatchTime.now())\n\n"
+            self.loop()
+        }
+    }
+}
+
 struct EditorView: View {
     
     @EnvironmentObject var editorState: ArticleEditorState
+    
+    var metaWindowContainer = NSWindow(
+        contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
+        styleMask: [.titled, .miniaturizable, .fullSizeContentView],
+        backing: .buffered,
+        defer: false
+    )
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -13,70 +35,33 @@ struct EditorView: View {
                         .frame(minHeight: 240, maxHeight: .infinity)
                         .font(.custom("Menlo", fixedSize: 12))
                     
-                    Button("Commit") {
+                    Button("Save Changes") {
                         editorState.saveArticleChangesRequested()
                     }
-                    .keyboardShortcut("s", modifiers: [.command])
                     .disabled(editorState.saveButtonDisabled)
+                    .keyboardShortcut("s", modifiers: [.command])
                     .padding()
                 }
-                MarkdownHtmlView(htmlContent: $editorState.articleHTML)
-            }
-            .padding()
-            
-            HStack(alignment: .bottom, spacing: 0) {
-                VStack(alignment: .trailing, spacing: 4) {
-                    labeledText("Title:", editorState.articleName)
-                    labeledText("ID:", editorState.articleId)
-                    summary("Summary:", editorState.articleSummary)
-                }
-                Spacer()
-                VStack(alignment: .trailing) {
-                    Button("Open Article") {
-                        openDirectory(editorState.receiveDirectory)
-                    }
-                    .keyboardShortcut("o", modifiers: [.command])
-                    
-                    
-                }
                 
+                PreviewView(evaluableJavascript: editorState.previewJavascriptInjection)
             }
-            .padding()
-        }
-    }
-    
-    private func labeledText(_ name: String, _ value: String) -> some View {
-        HStack(alignment: .top) {
-            Text(name)
-                .bold()
-            Spacer()
-                .frame(width: 16.0)
-            Text(value)
-                .frame(width: 256, alignment: .leading)
-        }
-    }
-    
-    private func summary(_ name: String, _ value: String) -> some View {
-        HStack(alignment: .top) {
-            Text(name)
-                .bold()
-            Spacer()
-                .frame(width: 16.0)
-            ScrollView {
-                Text(value)
-                    .frame(width: 256, alignment: .leading)
-            }
-            .frame(maxHeight: 64)
+            .padding(4)
+        }.onAppear{
+            let dcView = MetaView().environmentObject(editorState)
+            self.metaWindowContainer.contentView = NSHostingView(rootView: dcView)
+            self.metaWindowContainer.makeKeyAndOrderFront(nil)
         }
     }
 }
+
+// MARK: - Previews
 
 struct ContentView_Previews: PreviewProvider {
     static let test: ArticleEditorState = {
         let state = ArticleEditorState()
         
-        var summary = ""
-        (0...256).forEach { _ in summary.append("x") }
+        var summary = "no article here"
+//        (0...256).forEach { _ in summary.append("x") }
         state.articleSummary = summary
         
         state.articleBody = "# Hello, world!"
@@ -88,5 +73,8 @@ struct ContentView_Previews: PreviewProvider {
         EditorView()
             .previewLayout(/*@START_MENU_TOKEN@*/.fixed(width: /*@START_MENU_TOKEN@*/910.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/768.0/*@END_MENU_TOKEN@*/)/*@END_MENU_TOKEN@*/)
             .environmentObject(test)
+        MetaView()
+            .environmentObject(test)
     }
 }
+

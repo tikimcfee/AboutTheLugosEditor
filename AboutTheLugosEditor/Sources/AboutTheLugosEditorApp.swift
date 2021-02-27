@@ -11,6 +11,13 @@ struct AboutTheLugosEditorApp: App {
         WindowGroup {
             EditorView()
                 .environmentObject(appDelegate.editorState)
+        }.commands {
+            CommandMenu("Articles") {
+                Button("Open") {
+                    openDirectory(appDelegate.editorState.receiveDirectory)
+                }
+                .keyboardShortcut("o", modifiers: [.command])
+            }
         }
     }
 }

@@ -23,7 +23,10 @@ public class ArticleEditorState: ObservableObject {
     @Published private var originalBody: String = ""
     @Published var articleBody: String = ""
     @Published var articleHTML: String = ""
-    @Published var saveButtonDisabled: Bool = false
+    @Published var saveButtonDisabled: Bool = true
+    
+    // Preview data
+    @Published var previewJavascriptInjection: String = ""
     
     // Public error to preview in a window
     @Published var receiveError: Error?
@@ -35,14 +38,16 @@ public class ArticleEditorState: ObservableObject {
             .map    (articleBodyUpdated)
             .receive(on: DispatchQueue.main)
             .sink   {
-                (self.articleHTML, self.saveButtonDisabled) = $0
+                (self.articleHTML,
+                 self.previewJavascriptInjection,
+                 self.saveButtonDisabled) = $0
             }
             .store  (in: &cancellables)
         
-        // If the original body changes, we turn off changes. This is fragile.
+        // If body changes, we have a new file, or it was reset
         $originalBody
             .receive(on: DispatchQueue.main)
-            .sink   { _ in self.saveButtonDisabled = true}
+            .sink   { _ in self.saveButtonDisabled = true }
             .store  (in: &cancellables)
     }
     
@@ -58,13 +63,15 @@ public class ArticleEditorState: ObservableObject {
         }
     }
     
-    private func articleBodyUpdated(_ updatedBody: String) -> (String, Bool) {
+    private func articleBodyUpdated(_ updatedBody: String) -> (String, String, Bool) {
         let html = markdownParser.html(from: updatedBody)
+//        let escaped = html.convertedToBodyInjectionJavascriptString
+        let escaped = html
         
         let disableSaveButton = sourceFile == nil
             || updatedBody == originalBody
         
-        return (html, disableSaveButton)
+        return (html, escaped, disableSaveButton)
     }
     
     func saveArticleChangesRequested() {
@@ -74,8 +81,7 @@ public class ArticleEditorState: ObservableObject {
         }
         
         do {
-            try articleBody.write(toFile: file.articleFilePath.path,
-                                  atomically: true, encoding: .utf8)
+            try articleBody.write(toFile: file.articleFilePath.path, atomically: true, encoding: .utf8)
             originalBody = articleBody
         } catch {
             receiveError = error
