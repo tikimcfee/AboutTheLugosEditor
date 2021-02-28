@@ -9,7 +9,7 @@ public class ArticleEditorState: ObservableObject {
         case noFileToSave
     }
     
-    private let markdownQueue = DispatchQueue(label: "MarkdownProcessor", qos: .userInteractive)
+    private let markdownQueue = DispatchQueue(label: "MarkdownProcessor", qos: .userInitiated)
     private var cancellables = Set<AnyCancellable>()
     
     // ArtifleFile.Meta
@@ -18,9 +18,10 @@ public class ArticleEditorState: ObservableObject {
     @Published var articleId: String = "(no id)"
     
     // Article content and converted HTML
-    private var sourceFile: ArticleFile?
-    @Published private var originalBody: String = ""
+    @Published var sourceDirectory: Directory?
+    @Published var sourceFile: ArticleFile?
     @Published var articleBody: String = ""
+    @Published private var originalBody: String = ""
     @Published var articleHTML: String = ""
     @Published var saveButtonDisabled: Bool = true
     
@@ -34,7 +35,6 @@ public class ArticleEditorState: ObservableObject {
         // Map markdown to HTML
         $articleBody
             .receive(on: markdownQueue)
-            .debounce(for: .milliseconds(500), scheduler: markdownQueue)
             .map    (articleBodyUpdated)
             .receive(on: DispatchQueue.main)
             .sink   {
@@ -52,14 +52,19 @@ public class ArticleEditorState: ObservableObject {
     }
     
     func receiveDirectory(_ result: DirectoryResult) {
-        do {
-            var state = ArticleSniffState()
-            if let fileModel = try state.makeFrom(urls: try result.get().children) {
-                let fileContents = try fileModel.articleContents()
-                setPublishedState(body: fileContents, with: fileModel)
-            }
-        } catch {
+        switch result {
+        case .failure(let error):
             receiveError = error
+        case .success(let directory):
+            do {
+                var state = ArticleSniffState()
+                if let fileModel = try state.makeFrom(urls: directory.children) {
+                    let fileContents = try fileModel.articleContents()
+                    setStateFrom(body: fileContents, with: fileModel, parent: directory)
+                }
+            } catch {
+                receiveError = error
+            }
         }
     }
     
@@ -90,8 +95,9 @@ public class ArticleEditorState: ObservableObject {
 }
 
 private extension ArticleEditorState {
-    private func setPublishedState(body: String, with file: ArticleFile) {
+    private func setStateFrom(body: String, with file: ArticleFile, parent: Directory) {
         objectWillChange.send()
+        sourceDirectory = parent
         sourceFile = file
         articleName = file.meta.name
         articleSummary = file.meta.summary

@@ -49,7 +49,7 @@ class EditorTests: XCTestCase {
     func runConversion(_ data: String) {
         let markdown = MarkdownParser.standard.parse(data)
         let html = HtmlGenerator.standard.generate(doc: markdown)
-        let escaped = html.convertedToBodyInjectionJavascriptString
+//        let escaped = html.convertedToBodyInjectionJavascriptString
     }
 
 }

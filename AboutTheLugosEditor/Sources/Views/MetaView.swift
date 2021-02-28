@@ -4,55 +4,79 @@ struct MetaView: View {
     
     @EnvironmentObject var editorState: ArticleEditorState
     
+    private var filePath: String {
+        editorState.sourceDirectory?.root.path ?? "No article selected"
+    }
+    
+    private var articleName: String {
+        editorState.sourceFile?.meta.name ?? "-"
+    }
+    
+    private var articleId: String {
+        editorState.sourceFile?.meta.id ?? "-"
+    }
+    
+    private var articleSummary: String {
+        editorState.sourceFile?.meta.summary ?? "-"
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             info
         }
+//        .frame(maxWidth: 320)
         .padding()
     }
     
-    private var info: some View {
-        HStack(alignment: .top, spacing: 0) {
-            VStack(alignment: .trailing, spacing: 4) {
-                Text("Title:").bold()
-                Text("ID:").bold()
-                Text("Summary:").bold()
-            }
-            Spacer().frame(width: 8)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(editorState.articleName)
-                Text(editorState.articleId)
-                ScrollView {
-                    Text(editorState.articleSummary)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                }
-                .frame(maxWidth: 256, maxHeight: 128)
-            }
-        }
-    }
-
-    private func labeledText(_ name: String, _ value: String) -> some View {
+    @ViewBuilder
+    func infoRow<Right: View>(
+        _ name: String,
+        @ViewBuilder _ content: () -> Right
+    ) -> some View {
         HStack(alignment: .top) {
             Text(name)
                 .bold()
-            Spacer()
-                .frame(width: 16.0)
-            Text(value)
-                .frame(width: 256, alignment: .leading)
+                .frame(maxWidth: 96, alignment: .trailing)
+            content()
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
     
-    private func summary(_ name: String, _ value: String) -> some View {
-        HStack(alignment: .top) {
-            Text(name)
-                .bold()
-            Spacer()
-                .frame(width: 16.0)
-            ScrollView {
-                Text(value)
-                    .frame(width: 256, alignment: .leading)
+    private var info: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            infoRow("Path:") {
+                Text(filePath)
+                    .baselineOffset(-2)
+                    .fontWeight(.light)
+                    .font(.footnote)
+                    .multilineTextAlignment(.leading)
             }
-            .frame(maxHeight: 64)
+            Divider()
+            infoRow("Files:") {
+                LazyVStack(alignment: .leading, spacing: 4) {
+                    if let dir = editorState.sourceDirectory {
+                        ForEach(dir.children, id: \.path) { item in
+                            Text(item.lastPathComponent)
+                                .fontWeight(.light)
+                                .font(.footnote)
+                        }
+                    } else {
+                        Text("-")
+                            .italic()
+                            .fontWeight(.light)
+                    }
+                }
+            }
+            Divider()
+            infoRow("Title:") { Text(articleName) }
+            infoRow("ID:") { Text(articleId) }
+            infoRow("Summary:") {
+                ScrollView {
+                    Text(articleSummary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+            }
+            
         }
     }
 }
@@ -64,7 +88,7 @@ struct MetaView_Previews: PreviewProvider {
         let state = ArticleEditorState()
         
         var summary = "no article here"
-//        (0...256).forEach { _ in summary.append("x") }
+        (0...40).forEach { _ in summary.append(" ... .. ") }
         state.articleSummary = summary
         state.articleBody = "# Hello, world!"
         
