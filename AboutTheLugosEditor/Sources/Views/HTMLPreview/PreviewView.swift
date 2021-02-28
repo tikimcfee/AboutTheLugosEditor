@@ -15,19 +15,18 @@ struct PreviewView: NSViewRepresentable {
         let webView = WKWebView()
         
 //        // Add a `body` dom object to target with `document.body.innertHTML`
-//        webView.loadHTMLString("<html><body></body></html>", baseURL: nil)
+        webView.loadHTMLString("<html><body></body></html>", baseURL: nil)
         
         return webView
     }
     
     func updateNSView(_ webView: WKWebView, context: Context) {
-//        webView.evaluateJavaScript(evaluableJavascript) { _, error in
-//            if let error = error {
-//                print(error)
-//            }
-//        }
-        
-        webView.loadHTMLString(evaluableJavascript, baseURL: nil)
+        // Setting the dom body may take time, so just call async
+        webView.callAsyncJavaScript(
+            evaluableJavascript,
+            in: nil,
+            in: WKContentWorld.defaultClient
+        )
     }
     
     func makeCoordinator() -> WebViewCoordinator {

@@ -1,23 +1,8 @@
 import SwiftUI
 import Combine
 
-class LolBomb: ObservableObject {
-    @Published var string: String = ""
-    
-    init() {
-        loop()
-    }
-    
-    func loop() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 500 ) {
-            self.string += "Hello, World! \(DispatchTime.now())\n\n"
-            self.loop()
-        }
-    }
-}
-
 struct EditorView: View {
-    
+        
     @EnvironmentObject var editorState: ArticleEditorState
     
     var metaWindowContainer = NSWindow(

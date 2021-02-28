@@ -1,11 +1,9 @@
 @testable import AboutTheLugosEditor
 import SharedAppTools
-import Ink
 import XCTest
+import MarkdownKit
 
 class EditorTests: XCTestCase {
-    
-    let markdownParser = MarkdownParser()
 
     override func setUpWithError() throws {
         
@@ -39,18 +37,19 @@ class EditorTests: XCTestCase {
         }
     }
     
-    func testMarkdownParse1000() throws {
-        let data = TestData.markdown
-        measure {
-            (0...1000).forEach { _ in
-                runConversion(data)
-            }
-        }
-    }
+//    func testMarkdownParse1000() throws {
+//        let data = TestData.markdown
+//        measure {
+//            (0...1000).forEach { _ in
+//                runConversion(data)
+//            }
+//        }
+//    }
     
     func runConversion(_ data: String) {
-        let markdown = markdownParser.html(from: data)
-        _ = markdown.convertedToBodyInjectionJavascriptString
+        let markdown = MarkdownParser.standard.parse(data)
+        let html = HtmlGenerator.standard.generate(doc: markdown)
+        let escaped = html.convertedToBodyInjectionJavascriptString
     }
 
 }

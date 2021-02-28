@@ -11,11 +11,11 @@
 		B710AC6B25E74DA50044B8F4 /* EditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B710AC6A25E74DA50044B8F4 /* EditorView.swift */; };
 		B710AC6D25E74DA60044B8F4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B710AC6C25E74DA60044B8F4 /* Assets.xcassets */; };
 		B710AC7025E74DA60044B8F4 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B710AC6F25E74DA60044B8F4 /* Preview Assets.xcassets */; };
+		B71AC82225EB0E1300920F45 /* VaporLugos in Frameworks */ = {isa = PBXBuildFile; productRef = B71AC82125EB0E1300920F45 /* VaporLugos */; };
 		B74FB75625E8E480000AB1F1 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB75525E8E480000AB1F1 /* PreviewView.swift */; };
 		B75B3A1425EA06930089B2CA /* MetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A1325EA06930089B2CA /* MetaView.swift */; };
 		B75B3A1A25EA31BC0089B2CA /* JavascriptInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */; };
 		B75B3A2325EAA79A0089B2CA /* EditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A2225EAA79A0089B2CA /* EditorTests.swift */; };
-		B7841F8025E76BC900063927 /* VaporLugos in Frameworks */ = {isa = PBXBuildFile; productRef = B7841F7F25E76BC900063927 /* VaporLugos */; };
 		B7C38AC125E8820C00189689 /* ArticleEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC025E8820C00189689 /* ArticleEditorState.swift */; };
 		B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */; };
 /* End PBXBuildFile section */
@@ -53,7 +53,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7841F8025E76BC900063927 /* VaporLugos in Frameworks */,
+				B71AC82225EB0E1300920F45 /* VaporLugos in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +169,7 @@
 			);
 			name = AboutTheLugosEditor;
 			packageProductDependencies = (
-				B7841F7F25E76BC900063927 /* VaporLugos */,
+				B71AC82125EB0E1300920F45 /* VaporLugos */,
 			);
 			productName = AboutTheLugosEditor;
 			productReference = B710AC6525E74DA50044B8F4 /* AboutTheLugosEditor.app */;
@@ -221,7 +221,7 @@
 			);
 			mainGroup = B710AC5C25E74DA50044B8F4;
 			packageReferences = (
-				B7841F7E25E76BC900063927 /* XCRemoteSwiftPackageReference "AboutTheLugosSwiftly" */,
+				B71AC82025EB0E1300920F45 /* XCRemoteSwiftPackageReference "AboutTheLugosSwiftly" */,
 			);
 			productRefGroup = B710AC6625E74DA50044B8F4 /* Products */;
 			projectDirPath = "";
@@ -524,7 +524,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		B7841F7E25E76BC900063927 /* XCRemoteSwiftPackageReference "AboutTheLugosSwiftly" */ = {
+		B71AC82025EB0E1300920F45 /* XCRemoteSwiftPackageReference "AboutTheLugosSwiftly" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/tikimcfee/AboutTheLugosSwiftly/";
 			requirement = {
@@ -535,9 +535,9 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B7841F7F25E76BC900063927 /* VaporLugos */ = {
+		B71AC82125EB0E1300920F45 /* VaporLugos */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = B7841F7E25E76BC900063927 /* XCRemoteSwiftPackageReference "AboutTheLugosSwiftly" */;
+			package = B71AC82025EB0E1300920F45 /* XCRemoteSwiftPackageReference "AboutTheLugosSwiftly" */;
 			productName = VaporLugos;
 		};
 /* End XCSwiftPackageProductDependency section */

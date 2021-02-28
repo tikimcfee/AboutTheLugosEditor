@@ -6,17 +6,8 @@
         "repositoryURL": "https://github.com/tikimcfee/AboutTheLugosSwiftly/",
         "state": {
           "branch": "master",
-          "revision": "563e6202e530d21deeed1c9ffbae060e95fffbdb",
+          "revision": "2e7b0c1f4aae82def1b77491213b282a2b4455c4",
           "version": null
-        }
-      },
-      {
-        "package": "Ink",
-        "repositoryURL": "https://github.com/johnsundell/ink.git",
-        "state": {
-          "branch": null,
-          "revision": "bd223a2482449507bd3286cb262c962d32d81e4b",
-          "version": "0.5.0"
         }
       },
       {
@@ -30,11 +21,20 @@
       },
       {
         "package": "Html",
-        "repositoryURL": "https://github.com/pointfreeco/swift-html.git",
+        "repositoryURL": "https://github.com/tikimcfee/swift-html",
         "state": {
           "branch": null,
           "revision": "3ffc3fc8feb5fde766f5f44fd06ebc030f0721f3",
           "version": "0.3.1"
+        }
+      },
+      {
+        "package": "MarkdownKit",
+        "repositoryURL": "https://github.com/tikimcfee/swift-markdownkit",
+        "state": {
+          "branch": null,
+          "revision": "20f722a5909be4fede4ec4903db46780379cea9e",
+          "version": "1.0.5"
         }
       },
       {

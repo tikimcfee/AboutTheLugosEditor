@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 import SharedAppTools
-import Ink
+import MarkdownKit
 
 public class ArticleEditorState: ObservableObject {
     
@@ -10,7 +10,6 @@ public class ArticleEditorState: ObservableObject {
     }
     
     private let markdownQueue = DispatchQueue(label: "MarkdownProcessor", qos: .userInteractive)
-    private let markdownParser = MarkdownParser()
     private var cancellables = Set<AnyCancellable>()
     
     // ArtifleFile.Meta
@@ -30,11 +29,12 @@ public class ArticleEditorState: ObservableObject {
     
     // Public error to preview in a window
     @Published var receiveError: Error?
-    
+
     init() {
         // Map markdown to HTML
         $articleBody
             .receive(on: markdownQueue)
+            .debounce(for: .milliseconds(500), scheduler: markdownQueue)
             .map    (articleBodyUpdated)
             .receive(on: DispatchQueue.main)
             .sink   {
@@ -64,9 +64,9 @@ public class ArticleEditorState: ObservableObject {
     }
     
     private func articleBodyUpdated(_ updatedBody: String) -> (String, String, Bool) {
-        let html = markdownParser.html(from: updatedBody)
-//        let escaped = html.convertedToBodyInjectionJavascriptString
-        let escaped = html
+        let markdown = MarkdownParser.standard.parse(updatedBody)
+        let html = HtmlGenerator.standard.generate(doc: markdown)
+        let escaped = html.convertedToBodyInjectionJavascriptString
         
         let disableSaveButton = sourceFile == nil
             || updatedBody == originalBody
