@@ -8,7 +8,10 @@ struct EditorView: View {
     @State var editorScrollState = ScrollState()
     
     @EnvironmentObject var editorState: ArticleEditorState
+    @EnvironmentObject var metaState: MetaViewState
     
+    // I have absolutely no idea how this works. The window is retained somehow and not recreated?
+    // So the onAppear only creates a single window and view, apparently.
     var metaWindowContainer = NSWindow(
         contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
         styleMask: [.titled, .miniaturizable, .fullSizeContentView],
@@ -40,7 +43,9 @@ struct EditorView: View {
         }
         .padding()
         .onAppear {
-            let dcView = MetaView().environmentObject(editorState)
+            let dcView = MetaView()
+                .environmentObject(editorState)
+                .environmentObject(metaState)
             self.metaWindowContainer.contentView = NSHostingView(rootView: dcView)
             self.metaWindowContainer.makeKeyAndOrderFront(nil)
         }

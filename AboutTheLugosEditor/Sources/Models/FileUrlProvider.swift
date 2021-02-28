@@ -24,7 +24,7 @@ enum FileError: Error {
 func openFile(_ receiver: @escaping FileReceiver) {
     DispatchQueue.main.async {
         let panel = NSOpenPanel()
-        panel.nameFieldLabel = "Choose a Swift source file to view"
+        panel.nameFieldLabel = "Choose a file to view"
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.canHide = true
@@ -42,7 +42,7 @@ func openFile(_ receiver: @escaping FileReceiver) {
 func openDirectory(_ receiver: @escaping DirectoryReceiver) {
     DispatchQueue.main.async {
         let panel = NSOpenPanel()
-        panel.nameFieldLabel = "Choose a directory to load all .swift files"
+        panel.nameFieldLabel = "Choose a directory to load article"
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canHide = true

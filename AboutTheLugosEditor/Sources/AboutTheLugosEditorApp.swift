@@ -11,6 +11,7 @@ struct AboutTheLugosEditorApp: App {
         WindowGroup {
             EditorView()
                 .environmentObject(appDelegate.editorState)
+                .environmentObject(appDelegate.metaViewState)
         }.commands {
             CommandMenu("Articles") {
                 Button("Open") {
@@ -24,7 +25,9 @@ struct AboutTheLugosEditorApp: App {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     var cancellables = Set<AnyCancellable>()
+    
     let editorState = ArticleEditorState()
+    let metaViewState = MetaViewState()
     
     func applicationWillFinishLaunching(_ notification: Notification) {
         print("App launch", notification)

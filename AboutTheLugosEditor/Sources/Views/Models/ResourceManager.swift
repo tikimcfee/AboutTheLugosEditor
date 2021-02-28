@@ -1,8 +1,35 @@
 import Foundation
 import SharedAppTools
 
-class ResourceManager {
+class ResourceManager: ObservableObject {
+    lazy var component: ArticleLoaderComponent = {
+        let root = rootSubDirectory(named: "articles")
+        let comp = ArticleLoaderComponent(rootDirectory: root)
+        comp.onLoadStart = {
+            
+        }
+        comp.onLoadStop = { [weak self] in
+            self?.currentArticles = comp.currentArticles
+        }
+        comp.onLoadError = { error in
+            print(error)
+        }
+        return comp
+    }()
     
+    @Published var currentArticles: [ArticleFile] = []
+    
+    public subscript(_ id: String) -> ArticleFile? {
+        get { component.articleLookup[id] }
+    }
+    
+    init() {
+        
+    }
+    
+    func beginPolling() {
+        component.kickoffArticleLoading()
+    }
 }
 
 // * Read the list of available article bundle

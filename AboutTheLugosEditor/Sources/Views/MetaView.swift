@@ -1,8 +1,22 @@
 import SwiftUI
+import SharedAppTools
+
+class MetaViewState: ObservableObject {
+    public let resources = ResourceManager()
+    
+    init() {
+        
+    }
+    
+    public func viewAppeared() {
+        resources.beginPolling()
+    }
+}
 
 struct MetaView: View {
     
     @EnvironmentObject var editorState: ArticleEditorState
+    @EnvironmentObject var metaState: MetaViewState
     
     private var filePath: String {
         editorState.sourceDirectory?.root.path ?? "No article selected"
@@ -21,29 +35,31 @@ struct MetaView: View {
     }
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 8) {
+            files
             info
         }
 //        .frame(maxWidth: 320)
         .padding()
     }
     
-    @ViewBuilder
-    func infoRow<Right: View>(
-        _ name: String,
-        @ViewBuilder _ content: () -> Right
-    ) -> some View {
-        HStack(alignment: .top) {
-            Text(name)
-                .bold()
-                .frame(maxWidth: 96, alignment: .trailing)
-            content()
-                .frame(maxWidth: .infinity, alignment: .leading)
+    private var files: some View {
+        VStack {
+            LazyVStack {
+                ForEach(metaState.resources.currentArticles, id:\.meta.id) { item in
+                    HStack {
+                        Text(item.meta.id)
+                        Text(item.meta.name)
+                    }
+                    Divider()
+                }
+            }
         }
     }
     
     private var info: some View {
         VStack(alignment: .leading, spacing: 8) {
+            Divider()
             infoRow("Path:") {
                 Text(filePath)
                     .baselineOffset(-2)
@@ -79,6 +95,21 @@ struct MetaView: View {
             
         }
     }
+    
+    
+    @ViewBuilder
+    func infoRow<RightView: View>(
+        _ name: String,
+        @ViewBuilder _ content: () -> RightView
+    ) -> some View {
+        HStack(alignment: .top) {
+            Text(name)
+                .bold()
+                .frame(maxWidth: 96, alignment: .trailing)
+            content()
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
 }
 
 // MARK: - Previews
@@ -95,9 +126,16 @@ struct MetaView_Previews: PreviewProvider {
         return state
     }()
     
+    static let meta: MetaViewState = {
+        let state = MetaViewState()
+        state.resources.beginPolling()
+        return state
+    }()
+    
     static var previews: some View {
         MetaView()
             .environmentObject(test)
+            .environmentObject(meta)
     }
 }
 
