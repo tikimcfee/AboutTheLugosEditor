@@ -1,7 +1,7 @@
 import Foundation
 
 extension String {
-    private var hexEncodedContent: String {
+    var hexEncodedContent: String {
         reduce(into: "") { result, char in
             char.appendHexEncoding(to: &result)
         }
@@ -9,7 +9,7 @@ extension String {
     
     var convertedToBodyInjectionJavascriptString: String {
 """
-document.body.innerHTML='\(hexEncodedContent)'
+document.body.innerHTML='\(hexEncodedContent)';
 """
     }
 }

@@ -2,7 +2,11 @@ import SwiftUI
 import Combine
 
 struct EditorView: View {
-        
+    
+    @State var size = CGSize()
+    @State var previewScrollState = ScrollState()
+    @State var editorScrollState = ScrollState()
+    
     @EnvironmentObject var editorState: ArticleEditorState
     
     var metaWindowContainer = NSWindow(
@@ -13,25 +17,29 @@ struct EditorView: View {
     )
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                ZStack(alignment: .bottomTrailing) {
-                    TextEditor(text: $editorState.articleBody)
-                        .frame(minHeight: 240, maxHeight: .infinity)
-                        .font(.custom("Menlo", fixedSize: 12))
-                    
-                    Button("Save Changes") {
-                        editorState.saveArticleChangesRequested()
-                    }
-                    .disabled(editorState.saveButtonDisabled)
-                    .keyboardShortcut("s", modifiers: [.command])
-                    .padding()
-                }
-                
-                PreviewView(evaluableJavascript: editorState.previewJavascriptInjection)
-            }
-            .padding(4)
-        }.onAppear{
+        HStack {
+            EditorScrollShareTextView(
+                text: $editorState.articleBody,
+                previewScrollPosition: $previewScrollState,
+                editorScrollPosition: $editorScrollState
+            )
+            
+//            Button("Save Changes") {
+//                editorState.saveArticleChangesRequested()
+//            }
+//            .disabled(editorState.saveButtonDisabled)
+//            .keyboardShortcut("s", modifiers: [.command])
+//            .padding()
+            
+            Spacer().frame(width: 8)
+            PreviewView(
+                previewScrollState: $previewScrollState,
+                editorScrollState: $editorScrollState,
+                evaluableJavascript: editorState.previewJavascriptInjection
+            )
+        }
+        .padding()
+        .onAppear {
             let dcView = MetaView().environmentObject(editorState)
             self.metaWindowContainer.contentView = NSHostingView(rootView: dcView)
             self.metaWindowContainer.makeKeyAndOrderFront(nil)
