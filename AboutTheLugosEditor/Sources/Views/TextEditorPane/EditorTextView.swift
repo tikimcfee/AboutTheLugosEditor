@@ -92,7 +92,6 @@ class TextCoordinator: NSObject, NSTextViewDelegate {
             self.editorScrollPosition.scroll.wrappedValue = center.y
             self.editorScrollPosition.height.wrappedValue = height
         }
-        
     }
     
     func textDidChange(_ notification: Notification) {

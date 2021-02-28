@@ -14,6 +14,7 @@
 		B71AC82225EB0E1300920F45 /* VaporLugos in Frameworks */ = {isa = PBXBuildFile; productRef = B71AC82125EB0E1300920F45 /* VaporLugos */; };
 		B729C98C25EB90610042FB1B /* EditorTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729C98B25EB90610042FB1B /* EditorTextView.swift */; };
 		B729C99625EB939A0042FB1B /* UIDataModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B729C99525EB939A0042FB1B /* UIDataModels.swift */; };
+		B74533FC25EC1EB90054488B /* ResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74533FB25EC1EB90054488B /* ResourceManager.swift */; };
 		B74FB75625E8E480000AB1F1 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB75525E8E480000AB1F1 /* PreviewView.swift */; };
 		B75B3A1425EA06930089B2CA /* MetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A1325EA06930089B2CA /* MetaView.swift */; };
 		B75B3A1A25EA31BC0089B2CA /* JavascriptInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */; };
@@ -42,6 +43,7 @@
 		B710AC7225E74DA60044B8F4 /* AboutTheLugosEditor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AboutTheLugosEditor.entitlements; sourceTree = "<group>"; };
 		B729C98B25EB90610042FB1B /* EditorTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTextView.swift; sourceTree = "<group>"; };
 		B729C99525EB939A0042FB1B /* UIDataModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDataModels.swift; sourceTree = "<group>"; };
+		B74533FB25EC1EB90054488B /* ResourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceManager.swift; sourceTree = "<group>"; };
 		B74FB75525E8E480000AB1F1 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		B75B3A1325EA06930089B2CA /* MetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaView.swift; sourceTree = "<group>"; };
 		B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JavascriptInjection.swift; sourceTree = "<group>"; };
@@ -122,6 +124,7 @@
 			isa = PBXGroup;
 			children = (
 				B729C99525EB939A0042FB1B /* UIDataModels.swift */,
+				B74533FB25EC1EB90054488B /* ResourceManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 				B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */,
 				B729C98C25EB90610042FB1B /* EditorTextView.swift in Sources */,
 				B710AC6925E74DA50044B8F4 /* AboutTheLugosEditorApp.swift in Sources */,
+				B74533FC25EC1EB90054488B /* ResourceManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
