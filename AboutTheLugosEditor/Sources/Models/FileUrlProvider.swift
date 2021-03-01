@@ -42,7 +42,7 @@ func openFile(_ receiver: @escaping FileReceiver) {
 func openDirectory(_ receiver: @escaping DirectoryReceiver) {
     DispatchQueue.main.async {
         let panel = NSOpenPanel()
-        panel.nameFieldLabel = "Choose a directory to load article"
+        panel.nameFieldLabel = "Select root 'articles' directory"
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.canHide = true

@@ -13,8 +13,8 @@ struct EditorView: View {
     // I have absolutely no idea how this works. The window is retained somehow and not recreated?
     // So the onAppear only creates a single window and view, apparently.
     var metaWindowContainer = NSWindow(
-        contentRect: NSRect(x: 0, y: 0, width: 480, height: 300),
-        styleMask: [.titled, .miniaturizable, .fullSizeContentView],
+        contentRect: NSRect(x: 0, y: 0, width: 480, height: 600),
+        styleMask: [.titled, .resizable, .fullSizeContentView],
         backing: .buffered,
         defer: false
     )
@@ -22,7 +22,7 @@ struct EditorView: View {
     var body: some View {
         HStack {
             EditorScrollShareTextView(
-                text: $editorState.articleBody,
+                text: $editorState.editingBody,
                 previewScrollPosition: $previewScrollState,
                 editorScrollPosition: $editorScrollState
             )
@@ -57,12 +57,8 @@ struct EditorView: View {
 struct ContentView_Previews: PreviewProvider {
     static let test: ArticleEditorState = {
         let state = ArticleEditorState()
-        
-        var summary = "no article here"
-//        (0...256).forEach { _ in summary.append("x") }
-        state.articleSummary = summary
-        
-        state.articleBody = "# Hello, world!"
+        state.selection = .none
+        state.editingBody = "# Hello, world!"
         
         return state
     }()
@@ -71,8 +67,10 @@ struct ContentView_Previews: PreviewProvider {
         EditorView()
             .previewLayout(/*@START_MENU_TOKEN@*/.fixed(width: /*@START_MENU_TOKEN@*/910.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/768.0/*@END_MENU_TOKEN@*/)/*@END_MENU_TOKEN@*/)
             .environmentObject(test)
+            .environmentObject(MetaViewState())
         MetaView()
             .environmentObject(test)
+            .environmentObject(MetaViewState())
     }
 }
 

@@ -3,6 +3,22 @@ import Combine
 import SharedAppTools
 import MarkdownKit
 
+enum Selection {
+    case none
+    case directory(Directory)
+    case directoryArticle(EditingContainer)
+}
+
+struct EditingContainer {
+    let directory: Directory
+    let article: ArticleFile
+    var originalBody: String
+    
+    func canSaveWith(updated body: String) -> Bool {
+        return body != originalBody
+    }
+}
+
 public class ArticleEditorState: ObservableObject {
     
     public enum StateError: String, Error {
@@ -12,28 +28,23 @@ public class ArticleEditorState: ObservableObject {
     private let markdownQueue = DispatchQueue(label: "MarkdownProcessor", qos: .userInitiated)
     private var cancellables = Set<AnyCancellable>()
     
-    // ArtifleFile.Meta
-    @Published var articleName: String = "New Article"
-    @Published var articleSummary: String = "(no summary)"
-    @Published var articleId: String = "(no id)"
+    // Data locations
+    @Published var selection: Selection = .none
     
     // Article content and converted HTML
-    @Published var sourceDirectory: Directory?
-    @Published var sourceFile: ArticleFile?
-    @Published var articleBody: String = ""
-    @Published private var originalBody: String = ""
+    @Published var editingBody: String = ""
     @Published var articleHTML: String = ""
-    @Published var saveButtonDisabled: Bool = true
-    
-    // Preview data
     @Published var previewJavascriptInjection: String = ""
+    
+    // State
+    @Published var saveButtonDisabled: Bool = true
     
     // Public error to preview in a window
     @Published var receiveError: Error?
 
     init() {
         // Map markdown to HTML
-        $articleBody
+        $editingBody
             .receive(on: markdownQueue)
             .map    (articleBodyUpdated)
             .receive(on: DispatchQueue.main)
@@ -43,29 +54,6 @@ public class ArticleEditorState: ObservableObject {
                  self.saveButtonDisabled) = $0
             }
             .store  (in: &cancellables)
-        
-        // If body changes, we have a new file, or it was reset
-        $originalBody
-            .receive(on: DispatchQueue.main)
-            .sink   { _ in self.saveButtonDisabled = true }
-            .store  (in: &cancellables)
-    }
-    
-    func receiveDirectory(_ result: DirectoryResult) {
-        switch result {
-        case .failure(let error):
-            receiveError = error
-        case .success(let directory):
-            do {
-                var state = ArticleSniffState()
-                if let fileModel = try state.makeFrom(urls: directory.children) {
-                    let fileContents = try fileModel.articleContents()
-                    setStateFrom(body: fileContents, with: fileModel, parent: directory)
-                }
-            } catch {
-                receiveError = error
-            }
-        }
     }
     
     private func articleBodyUpdated(_ updatedBody: String) -> (String, String, Bool) {
@@ -73,36 +61,30 @@ public class ArticleEditorState: ObservableObject {
         let html = HtmlGenerator.standard.generate(doc: markdown)
         let escaped = html.convertedToBodyInjectionJavascriptString
         
-        let disableSaveButton = sourceFile == nil
-            || updatedBody == originalBody
+        var canSave: Bool
+        switch selection {
+        case .directoryArticle(let container):
+            canSave = container.originalBody != updatedBody
+        case .none, .directory:
+            canSave = false
+        }
         
-        return (html, escaped, disableSaveButton)
+        return (html, escaped, !canSave)
     }
     
     func saveArticleChangesRequested() {
-        guard let file = sourceFile else {
+        guard case var .directoryArticle(container) = selection else {
             receiveError = StateError.noFileToSave
             return
         }
         
         do {
-            try articleBody.write(toFile: file.articleFilePath.path, atomically: true, encoding: .utf8)
-            originalBody = articleBody
+            let path = container.article.articleFilePath.path
+            try editingBody.write(toFile: path, atomically: true, encoding: .utf8)
+            container.originalBody = editingBody
+            selection = .directoryArticle(container)
         } catch {
             receiveError = error
         }
-    }
-}
-
-private extension ArticleEditorState {
-    private func setStateFrom(body: String, with file: ArticleFile, parent: Directory) {
-        objectWillChange.send()
-        sourceDirectory = parent
-        sourceFile = file
-        articleName = file.meta.name
-        articleSummary = file.meta.summary
-        articleId = file.meta.id
-        originalBody = body // updates canSave state via publisher
-        articleBody = body  // updates htmlBody via publisher
     }
 }

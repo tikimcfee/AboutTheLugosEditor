@@ -124,7 +124,6 @@
 			isa = PBXGroup;
 			children = (
 				B729C99525EB939A0042FB1B /* UIDataModels.swift */,
-				B74533FB25EC1EB90054488B /* ResourceManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -171,6 +170,7 @@
 		B7C38ABF25E881FD00189689 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B74533FB25EC1EB90054488B /* ResourceManager.swift */,
 				B7C38AC025E8820C00189689 /* ArticleEditorState.swift */,
 				B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */,
 			);

@@ -2,7 +2,7 @@ import Foundation
 import SharedAppTools
 import Combine
 
-class ResourceManager: ObservableObject {
+public class ResourceManager: ObservableObject {
     lazy var component: ArticleLoaderComponent = {
         let root = rootSubDirectory(named: "articles")
         let loadingComponent = ArticleLoaderComponent(rootDirectory: root)
@@ -20,22 +20,26 @@ class ResourceManager: ObservableObject {
     
     @Published var currentArticles: [ArticleFile] = []
     
-    public subscript(_ id: String) -> ArticleFile? {
-        get { component.articleLookup[id] }
+    var selectedRootDirectory: URL? = nil {
+        didSet {
+            if let url = selectedRootDirectory {
+                component.rootDirectory = url
+            }
+        }
     }
     
-    init() {
-        
+    public init() {
+        component.kickoffArticleLoading()
+    }
+    
+    public subscript(_ id: String) -> ArticleFile? {
+        get { component.articleLookup[id] }
     }
     
     func sortedArticle(_ list: [ArticleFile]) -> [ArticleFile] {
         list.sorted { left, right in
             left.meta.postedAt < right.meta.postedAt
         }
-    }
-    
-    func beginPolling() {
-        component.kickoffArticleLoading()
     }
 }
 
