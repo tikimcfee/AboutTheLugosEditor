@@ -4,12 +4,33 @@ import SharedAppTools
 class MetaViewState: ObservableObject {
     public let resources = ResourceManager()
     
-    init() {
-        
-    }
-    
     public func viewAppeared() {
         resources.beginPolling()
+    }
+}
+
+private let LongDateShortTime: DateFormatter = {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateStyle = .long
+    dateFormatter.timeStyle = .short
+    return dateFormatter
+}()
+
+extension ArticleFile: Hashable, Equatable, Identifiable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(meta.id)
+    }
+    
+    public var id: String { meta.id }
+    
+    public static func == (_ left: ArticleFile, _ right: ArticleFile) -> Bool {
+        return left.articleFilePath == right.articleFilePath
+            && left.metaFilePath == right.metaFilePath
+            && left.meta == right.meta
+    }
+    
+    var metaDateDisplay: String {
+        LongDateShortTime.string(from: Date(timeIntervalSince1970: meta.postedAt))
     }
 }
 
@@ -34,26 +55,43 @@ struct MetaView: View {
         editorState.sourceFile?.meta.summary ?? "-"
     }
     
+    
     var body: some View {
         VStack(spacing: 8) {
-            files
             info
+            Divider()
+                .frame(height: 2)
+                .background(Color.blue)
+            files
         }
-//        .frame(maxWidth: 320)
-        .padding()
     }
     
     private var files: some View {
-        VStack {
-            LazyVStack {
-                ForEach(metaState.resources.currentArticles, id:\.meta.id) { item in
-                    HStack {
-                        Text(item.meta.id)
-                        Text(item.meta.name)
-                    }
-                    Divider()
+        List(metaState.resources.currentArticles, selection: $editorState.sourceFile) { item in
+            makeFileButton(item)
+        }
+    }
+    
+    private func makeFileButton(_ item: ArticleFile) -> some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 4) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(item.meta.name)
+                        .fontWeight(.heavy)
+                        .font(.system(size: 16))
+                    Text(item.metaDateDisplay)
+                        .fontWeight(.light)
+                        .font(.system(size: 12))
                 }
+                Text(item.meta.summary)
+                    .font(.system(size: 10))
+                    .italic()
+                    .fontWeight(.light)
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(8)
+            .background(Color(red: 0.3, green: 0.3, blue: 0.3, opacity: 0.25))
+            .cornerRadius(4.0)
         }
     }
     
@@ -62,7 +100,6 @@ struct MetaView: View {
             Divider()
             infoRow("Path:") {
                 Text(filePath)
-                    .baselineOffset(-2)
                     .fontWeight(.light)
                     .font(.footnote)
                     .multilineTextAlignment(.leading)
@@ -102,7 +139,7 @@ struct MetaView: View {
         _ name: String,
         @ViewBuilder _ content: () -> RightView
     ) -> some View {
-        HStack(alignment: .top) {
+        HStack(alignment: .center) {
             Text(name)
                 .bold()
                 .frame(maxWidth: 96, alignment: .trailing)

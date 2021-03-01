@@ -1,20 +1,21 @@
 import Foundation
 import SharedAppTools
+import Combine
 
 class ResourceManager: ObservableObject {
     lazy var component: ArticleLoaderComponent = {
         let root = rootSubDirectory(named: "articles")
-        let comp = ArticleLoaderComponent(rootDirectory: root)
-        comp.onLoadStart = {
+        let loadingComponent = ArticleLoaderComponent(rootDirectory: root)
+        loadingComponent.onLoadStart = {
             
         }
-        comp.onLoadStop = { [weak self] in
-            self?.currentArticles = comp.currentArticles
+        loadingComponent.onLoadStop = {
+            self.currentArticles = self.sortedArticle(loadingComponent.currentArticles)
         }
-        comp.onLoadError = { error in
+        loadingComponent.onLoadError = { error in
             print(error)
         }
-        return comp
+        return loadingComponent
     }()
     
     @Published var currentArticles: [ArticleFile] = []
@@ -25,6 +26,12 @@ class ResourceManager: ObservableObject {
     
     init() {
         
+    }
+    
+    func sortedArticle(_ list: [ArticleFile]) -> [ArticleFile] {
+        list.sorted { left, right in
+            left.meta.postedAt < right.meta.postedAt
+        }
     }
     
     func beginPolling() {
