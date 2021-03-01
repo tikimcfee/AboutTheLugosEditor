@@ -4,35 +4,6 @@ import SharedAppTools
 class MetaViewState: ObservableObject {
     @Published var availableArticles: [ArticleFile] = []
     @Published var selectedArticle: ArticleFile? = nil
-    
-    public func viewAppeared() {
-        
-    }
-}
-
-private let LongDateShortTime: DateFormatter = {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateStyle = .long
-    dateFormatter.timeStyle = .short
-    return dateFormatter
-}()
-
-extension ArticleFile: Hashable, Equatable, Identifiable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(meta.id)
-    }
-    
-    public var id: String { meta.id }
-    
-    public static func == (_ left: ArticleFile, _ right: ArticleFile) -> Bool {
-        return left.articleFilePath == right.articleFilePath
-            && left.metaFilePath == right.metaFilePath
-            && left.meta == right.meta
-    }
-    
-    var metaDateDisplay: String {
-        LongDateShortTime.string(from: Date(timeIntervalSince1970: meta.postedAt))
-    }
 }
 
 struct MetaView: View {
@@ -42,11 +13,9 @@ struct MetaView: View {
     var body: some View {
         VStack(spacing: 8) {
             info
-            Divider()
-                .frame(height: 2)
-                .background(Color.blue)
+            Divider().frame(height: 2)
             files
-        }
+        }.padding(8)
     }
     
     private var files: some View {
@@ -88,7 +57,6 @@ struct MetaView: View {
         let summary = metaState.selectedArticle?.meta.summary ?? "-"
         
         return VStack(alignment: .leading, spacing: 8) {
-            Divider()
             infoRow("Path:") {
                 Text(path)
                     .fontWeight(.light)
@@ -98,15 +66,21 @@ struct MetaView: View {
             Divider()
             infoRow("Title:") { Text(title) }
             infoRow("ID:") { Text(id) }
-            infoRow("Summary:") {
+            
+            HStack(alignment: .top) {
+                Text("Summary")
+                    .bold()
+                    .frame(maxWidth: 96, alignment: .trailing)
                 ScrollView {
                     Text(summary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                .frame(maxHeight: 256)
+                .padding(4)
+                .addBorder(Color.gray)
             }
         }
     }
-    
     
     @ViewBuilder
     func infoRow<RightView: View>(
@@ -120,6 +94,16 @@ struct MetaView: View {
             content()
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
+    }
+}
+
+extension View {
+    public func addBorder<S>(_ content: S,
+                             width: CGFloat = 1,
+                             cornerRadius: CGFloat = 4) -> some View where S : ShapeStyle {
+        let roundedRect = RoundedRectangle(cornerRadius: cornerRadius)
+        return clipShape(roundedRect)
+             .overlay(roundedRect.strokeBorder(content, lineWidth: width))
     }
 }
 
