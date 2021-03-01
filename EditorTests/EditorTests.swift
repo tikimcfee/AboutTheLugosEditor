@@ -11,19 +11,13 @@ class EditorTests: XCTestCase {
 
     override func tearDownWithError() throws {
         
-    }
+    }    
+}
 
+class ParsingTests: XCTestCase {
     func testMarkdownParseOnce() throws {
         let data = TestData.markdown
         measure {
-            runConversion(data)
-        }
-    }
-    
-    func testMarkdownParseCached() throws {
-        let data = TestData.markdown
-        measure {
-            runConversion(data)
             runConversion(data)
         }
     }
@@ -37,19 +31,19 @@ class EditorTests: XCTestCase {
         }
     }
     
-//    func testMarkdownParse1000() throws {
-//        let data = TestData.markdown
-//        measure {
-//            (0...1000).forEach { _ in
-//                runConversion(data)
-//            }
-//        }
-//    }
+    func testMarkdownParse1000() throws {
+        let data = TestData.markdown
+        measure {
+            (0...1000).forEach { _ in
+                runConversion(data)
+            }
+        }
+    }
     
     func runConversion(_ data: String) {
         let markdown = MarkdownParser.standard.parse(data)
         let html = HtmlGenerator.standard.generate(doc: markdown)
-//        let escaped = html.convertedToBodyInjectionJavascriptString
+        _ = html.convertedToBodyInjectionJavascriptString
     }
 
 }

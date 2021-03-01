@@ -21,18 +21,19 @@ struct EditorView: View {
     
     var body: some View {
         HStack {
-            EditorScrollShareTextView(
-                text: $editorState.editingBody,
-                previewScrollPosition: $previewScrollState,
-                editorScrollPosition: $editorScrollState
-            )
-            
-//            Button("Save Changes") {
-//                editorState.saveArticleChangesRequested()
-//            }
-//            .disabled(editorState.saveButtonDisabled)
-//            .keyboardShortcut("s", modifiers: [.command])
-//            .padding()
+            ZStack(alignment: .bottomTrailing) {
+                EditorScrollShareTextView(
+                    text: $editorState.editingBody,
+                    previewScrollPosition: $previewScrollState,
+                    editorScrollPosition: $editorScrollState
+                )
+                Button("Save Changes") {
+                    editorState.saveArticleChangesRequested()
+                }
+                .disabled(editorState.saveButtonDisabled)
+                .keyboardShortcut("s", modifiers: [.command])
+                .padding()
+            }
             
             Spacer().frame(width: 8)
             PreviewView(

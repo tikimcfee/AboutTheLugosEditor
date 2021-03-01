@@ -67,9 +67,15 @@ class TextCoordinator: NSObject, NSTextViewDelegate {
         textView.postsFrameChangedNotifications = true
         textView.isSelectable = true
         textView.isEditable = true
+        textView.allowsUndo = true
         textView.isRichText = false
         textView.importsGraphics = false
         textView.drawsBackground = false
+        textView.isAutomaticTextReplacementEnabled = true
+        textView.isAutomaticSpellingCorrectionEnabled = true
+        textView.isAutomaticQuoteSubstitutionEnabled = true
+        textView.isAutomaticTextCompletionEnabled = true
+        textView.isContinuousSpellCheckingEnabled = true
         
         NotificationCenter.default.addObserver(
             self,
