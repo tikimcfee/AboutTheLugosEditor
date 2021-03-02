@@ -15,6 +15,8 @@ class EditorTests: XCTestCase {
 }
 
 class ParsingTests: XCTestCase {
+    let processor = EscapingMarkdownConverter()
+    
     func testMarkdownParseOnce() throws {
         let data = TestData.markdown
         measure {
@@ -41,9 +43,7 @@ class ParsingTests: XCTestCase {
     }
     
     func runConversion(_ data: String) {
-        let markdown = MarkdownParser.standard.parse(data)
-        let html = HtmlGenerator.standard.generate(doc: markdown)
-        _ = html.convertedToBodyInjectionJavascriptString
+        _ = processor.markdownToEscapedHtml(data)
     }
 
 }

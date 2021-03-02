@@ -1,13 +1,13 @@
 import SwiftUI
 import Combine
 
-struct EditorView: View {
+struct MainEditorView: View {
     
     @State var size = CGSize()
     @State var previewScrollState = ScrollState()
     @State var editorScrollState = ScrollState()
     
-    @EnvironmentObject var editorState: ArticleEditorState
+    @EnvironmentObject var editorState: MainEditorState
     @EnvironmentObject var metaState: MetaViewState
     
     // I have absolutely no idea how this works. The window is retained somehow and not recreated?
@@ -40,7 +40,7 @@ struct EditorView: View {
             PreviewView(
                 previewScrollState: $previewScrollState,
                 editorScrollState: $editorScrollState,
-                evaluableJavascript: editorState.previewJavascriptInjection
+                evaluableJavascript: editorState.previewJavascript
             )
         }
         .padding()
@@ -58,8 +58,8 @@ struct EditorView: View {
 
 #if DEBUG
 struct ContentView_Previews: PreviewProvider {
-    static let test: ArticleEditorState = {
-        let state = ArticleEditorState()
+    static let test: MainEditorState = {
+        let state = MainEditorState(converter: EscapingMarkdownConverter())
         state.selection = .none
         state.editingBody = "# Hello, world!"
         
@@ -67,7 +67,7 @@ struct ContentView_Previews: PreviewProvider {
     }()
     
     static var previews: some View {
-        EditorView()
+        MainEditorView()
             .previewLayout(/*@START_MENU_TOKEN@*/.fixed(width: /*@START_MENU_TOKEN@*/910.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/768.0/*@END_MENU_TOKEN@*/)/*@END_MENU_TOKEN@*/)
             .environmentObject(test)
             .environmentObject(MetaViewState())

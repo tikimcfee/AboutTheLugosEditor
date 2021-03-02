@@ -94,8 +94,8 @@ struct MetaView: View {
 
 #if DEBUG
 struct MetaView_Previews: PreviewProvider {
-    static let test: ArticleEditorState = {
-        let state = ArticleEditorState()
+    static let test: MainEditorState = {
+        let state = MainEditorState(converter: EscapingMarkdownConverter())
         
         state.editingBody = "# Hello, world!"
         

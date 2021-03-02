@@ -10,9 +10,23 @@ enum DelegateError: String, Error {
 class AppDelegate: NSObject, NSApplicationDelegate {
     var cancellables = Set<AnyCancellable>()
     
-    let resources = ResourceManager()
-    let editorState = ArticleEditorState()
-    let metaViewState = MetaViewState()
+    let converter: EscapingMarkdownConverter
+    let resources: ResourceManager
+    let editorState: MainEditorState
+    let metaViewState: MetaViewState
+    
+    override init() {
+        converter = EscapingMarkdownConverter()
+        
+        editorState = MainEditorState(
+            converter: converter
+        )
+        
+        resources = ResourceManager()
+        
+        metaViewState = MetaViewState()
+        super.init()
+    }
     
     func applicationWillFinishLaunching(_ notification: Notification) {
         print("App launch", notification)

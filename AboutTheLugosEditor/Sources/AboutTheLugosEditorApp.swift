@@ -9,7 +9,7 @@ struct AboutTheLugosEditorApp: App {
     
     var body: some Scene {
         WindowGroup {
-            EditorView()
+            MainEditorView()
                 .environmentObject(appDelegate.editorState)
                 .environmentObject(appDelegate.metaViewState)
         }.commands {

@@ -52,12 +52,13 @@ private extension TextCoordinator {
         textView.isRichText = false
         textView.importsGraphics = false
         textView.drawsBackground = false
-        textView.isAutomaticTextReplacementEnabled = true
-        textView.isAutomaticSpellingCorrectionEnabled = true
-        textView.isAutomaticTextCompletionEnabled = true
-        textView.isContinuousSpellCheckingEnabled = true
-        textView.isIncrementalSearchingEnabled = true
+        textView.isAutomaticTextReplacementEnabled = false
+        textView.isAutomaticSpellingCorrectionEnabled = false
+        textView.isAutomaticTextCompletionEnabled = false
+        textView.isContinuousSpellCheckingEnabled = false
+        textView.isIncrementalSearchingEnabled = false
         textView.isAutomaticQuoteSubstitutionEnabled = false
+        textView.isGrammarCheckingEnabled = false
         
         textView.delegate = self
         
