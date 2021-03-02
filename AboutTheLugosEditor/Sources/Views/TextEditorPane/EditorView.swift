@@ -36,6 +36,7 @@ struct EditorView: View {
             }
             
             Spacer().frame(width: 8)
+            
             PreviewView(
                 previewScrollState: $previewScrollState,
                 editorScrollState: $editorScrollState,
@@ -55,6 +56,7 @@ struct EditorView: View {
 
 // MARK: - Previews
 
+#if DEBUG
 struct ContentView_Previews: PreviewProvider {
     static let test: ArticleEditorState = {
         let state = ArticleEditorState()
@@ -74,4 +76,4 @@ struct ContentView_Previews: PreviewProvider {
             .environmentObject(MetaViewState())
     }
 }
-
+#endif

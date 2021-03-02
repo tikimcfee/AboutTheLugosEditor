@@ -21,8 +21,13 @@
 		B75B3A2325EAA79A0089B2CA /* EditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A2225EAA79A0089B2CA /* EditorTests.swift */; };
 		B7640D8525EC970600261EB4 /* MainAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7640D8425EC970600261EB4 /* MainAppDelegate.swift */; };
 		B7640D8B25EC97C400261EB4 /* ArticleFile+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7640D8A25EC97C400261EB4 /* ArticleFile+Extensions.swift */; };
+		B799A38025ED910500F2C0B1 /* EditorTextViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799A37F25ED910500F2C0B1 /* EditorTextViewCoordinator.swift */; };
+		B799A38425ED9C8900F2C0B1 /* ArticleEditorModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799A38325ED9C8900F2C0B1 /* ArticleEditorModels.swift */; };
 		B7C38AC125E8820C00189689 /* ArticleEditorState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC025E8820C00189689 /* ArticleEditorState.swift */; };
 		B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */; };
+		B7CC17A225EDB7E20043B1F3 /* PreviewWebViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC17A125EDB7E20043B1F3 /* PreviewWebViewCoordinator.swift */; };
+		B7CC17A925EDBCA30043B1F3 /* MetaViewState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC17A825EDBCA30043B1F3 /* MetaViewState.swift */; };
+		B7CC17AD25EDC2B20043B1F3 /* View+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7CC17AC25EDC2B20043B1F3 /* View+Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -54,8 +59,13 @@
 		B75B3A2425EAA79A0089B2CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7640D8425EC970600261EB4 /* MainAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppDelegate.swift; sourceTree = "<group>"; };
 		B7640D8A25EC97C400261EB4 /* ArticleFile+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArticleFile+Extensions.swift"; sourceTree = "<group>"; };
+		B799A37F25ED910500F2C0B1 /* EditorTextViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTextViewCoordinator.swift; sourceTree = "<group>"; };
+		B799A38325ED9C8900F2C0B1 /* ArticleEditorModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleEditorModels.swift; sourceTree = "<group>"; };
 		B7C38AC025E8820C00189689 /* ArticleEditorState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleEditorState.swift; sourceTree = "<group>"; };
 		B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileUrlProvider.swift; sourceTree = "<group>"; };
+		B7CC17A125EDB7E20043B1F3 /* PreviewWebViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewWebViewCoordinator.swift; sourceTree = "<group>"; };
+		B7CC17A825EDBCA30043B1F3 /* MetaViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaViewState.swift; sourceTree = "<group>"; };
+		B7CC17AC25EDC2B20043B1F3 /* View+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,25 +130,28 @@
 			children = (
 				B710AC6A25E74DA50044B8F4 /* EditorView.swift */,
 				B729C98B25EB90610042FB1B /* EditorTextView.swift */,
+				B799A37F25ED910500F2C0B1 /* EditorTextViewCoordinator.swift */,
 			);
 			path = TextEditorPane;
 			sourceTree = "<group>";
 		};
-		B729C99425EB937B0042FB1B /* Models */ = {
+		B729C99425EB937B0042FB1B /* EditorState */ = {
 			isa = PBXGroup;
 			children = (
-				B729C99525EB939A0042FB1B /* UIDataModels.swift */,
+				B7C38AC025E8820C00189689 /* ArticleEditorState.swift */,
+				B799A38325ED9C8900F2C0B1 /* ArticleEditorModels.swift */,
 			);
-			path = Models;
+			path = EditorState;
 			sourceTree = "<group>";
 		};
 		B74FB75825E8E483000AB1F1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B729C99425EB937B0042FB1B /* Models */,
+				B7CC17AC25EDC2B20043B1F3 /* View+Extensions.swift */,
+				B729C99425EB937B0042FB1B /* EditorState */,
 				B729C98F25EB930D0042FB1B /* TextEditorPane */,
 				B75B3A1725EA309B0089B2CA /* HTMLPreviewPane */,
-				B75B3A1325EA06930089B2CA /* MetaView.swift */,
+				B7CC17A525EDBAAD0043B1F3 /* MetaView */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -147,7 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				B74FB75525E8E480000AB1F1 /* PreviewView.swift */,
-				B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */,
+				B7CC17A125EDB7E20043B1F3 /* PreviewWebViewCoordinator.swift */,
 			);
 			path = HTMLPreviewPane;
 			sourceTree = "<group>";
@@ -166,6 +179,7 @@
 			children = (
 				B710AC6825E74DA50044B8F4 /* AboutTheLugosEditorApp.swift */,
 				B7640D8425EC970600261EB4 /* MainAppDelegate.swift */,
+				B7CC179C25EDB6830043B1F3 /* Managers */,
 				B7C38ABF25E881FD00189689 /* Models */,
 				B74FB75825E8E483000AB1F1 /* Views */,
 			);
@@ -175,12 +189,29 @@
 		B7C38ABF25E881FD00189689 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B74533FB25EC1EB90054488B /* ResourceManager.swift */,
-				B7C38AC025E8820C00189689 /* ArticleEditorState.swift */,
-				B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */,
-				B7640D8A25EC97C400261EB4 /* ArticleFile+Extensions.swift */,
+				B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */,
+				B729C99525EB939A0042FB1B /* UIDataModels.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B7CC179C25EDB6830043B1F3 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				B74533FB25EC1EB90054488B /* ResourceManager.swift */,
+				B7640D8A25EC97C400261EB4 /* ArticleFile+Extensions.swift */,
+				B7C38AC525E8AA5300189689 /* FileUrlProvider.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		B7CC17A525EDBAAD0043B1F3 /* MetaView */ = {
+			isa = PBXGroup;
+			children = (
+				B75B3A1325EA06930089B2CA /* MetaView.swift */,
+				B7CC17A825EDBCA30043B1F3 /* MetaViewState.swift */,
+			);
+			path = MetaView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,14 +320,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				B74FB75625E8E480000AB1F1 /* PreviewView.swift in Sources */,
+				B7CC17A925EDBCA30043B1F3 /* MetaViewState.swift in Sources */,
 				B729C99625EB939A0042FB1B /* UIDataModels.swift in Sources */,
 				B7640D8B25EC97C400261EB4 /* ArticleFile+Extensions.swift in Sources */,
 				B710AC6B25E74DA50044B8F4 /* EditorView.swift in Sources */,
 				B75B3A1A25EA31BC0089B2CA /* JavascriptInjection.swift in Sources */,
+				B7CC17A225EDB7E20043B1F3 /* PreviewWebViewCoordinator.swift in Sources */,
+				B7CC17AD25EDC2B20043B1F3 /* View+Extensions.swift in Sources */,
 				B7C38AC125E8820C00189689 /* ArticleEditorState.swift in Sources */,
 				B75B3A1425EA06930089B2CA /* MetaView.swift in Sources */,
 				B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */,
 				B729C98C25EB90610042FB1B /* EditorTextView.swift in Sources */,
+				B799A38425ED9C8900F2C0B1 /* ArticleEditorModels.swift in Sources */,
+				B799A38025ED910500F2C0B1 /* EditorTextViewCoordinator.swift in Sources */,
 				B7640D8525EC970600261EB4 /* MainAppDelegate.swift in Sources */,
 				B710AC6925E74DA50044B8F4 /* AboutTheLugosEditorApp.swift in Sources */,
 				B74533FC25EC1EB90054488B /* ResourceManager.swift in Sources */,

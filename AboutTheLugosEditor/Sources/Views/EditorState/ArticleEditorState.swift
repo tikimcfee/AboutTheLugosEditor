@@ -3,22 +3,6 @@ import Combine
 import SharedAppTools
 import MarkdownKit
 
-enum Selection {
-    case none
-    case directory(Directory)
-    case directoryArticle(EditingContainer)
-}
-
-struct EditingContainer {
-    let directory: Directory
-    let article: ArticleFile
-    var originalBody: String
-    
-    func canSaveWith(updated body: String) -> Bool {
-        return body != originalBody
-    }
-}
-
 public class ArticleEditorState: ObservableObject {
     
     public enum StateError: String, Error {
@@ -28,7 +12,7 @@ public class ArticleEditorState: ObservableObject {
     private let markdownQueue = DispatchQueue(label: "MarkdownProcessor", qos: .userInitiated)
     private var cancellables = Set<AnyCancellable>()
     
-    // Data locations
+    // Selection state changes based on user's folder and article selections
     @Published var selection: Selection = .none
     
     // Article content and converted HTML
@@ -42,7 +26,7 @@ public class ArticleEditorState: ObservableObject {
     // Public error to preview in a window
     @Published var receiveError: Error?
 
-    init() {
+    public init() {
         // Map markdown to HTML
         $editingBody
             .receive(on: markdownQueue)
@@ -86,5 +70,13 @@ public class ArticleEditorState: ObservableObject {
         } catch {
             receiveError = error
         }
+    }
+}
+
+private extension String {
+    var convertedToBodyInjectionJavascriptString: String {
+"""
+document.body.innerHTML='\(hexEncodedContent)';
+"""
     }
 }

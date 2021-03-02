@@ -1,11 +1,6 @@
 import SwiftUI
 import SharedAppTools
 
-class MetaViewState: ObservableObject {
-    @Published var availableArticles: [ArticleFile] = []
-    @Published var selectedArticle: ArticleFile? = nil
-}
-
 struct MetaView: View {
 
     @EnvironmentObject var metaState: MetaViewState
@@ -97,18 +92,7 @@ struct MetaView: View {
     }
 }
 
-extension View {
-    public func addBorder<S>(_ content: S,
-                             width: CGFloat = 1,
-                             cornerRadius: CGFloat = 4) -> some View where S : ShapeStyle {
-        let roundedRect = RoundedRectangle(cornerRadius: cornerRadius)
-        return clipShape(roundedRect)
-             .overlay(roundedRect.strokeBorder(content, lineWidth: width))
-    }
-}
-
-// MARK: - Previews
-
+#if DEBUG
 struct MetaView_Previews: PreviewProvider {
     static let test: ArticleEditorState = {
         let state = ArticleEditorState()
@@ -130,4 +114,4 @@ struct MetaView_Previews: PreviewProvider {
             .environmentObject(meta)
     }
 }
-
+#endif

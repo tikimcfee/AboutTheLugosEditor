@@ -6,26 +6,12 @@ extension String {
             char.appendHexEncoding(to: &result)
         }
     }
-    
-    var convertedToBodyInjectionJavascriptString: String {
-"""
-document.body.innerHTML='\(hexEncodedContent)';
-"""
-    }
 }
 
-private extension Character {
+public extension Character {
     static var cache = [Self: String]()
     
-    var shouldEncodeForJS: Bool {
-        guard let scalar = unicodeScalars.first,
-              CharacterSet.alphanumerics.contains(scalar) else {
-            return true
-        }
-        return false
-    }
-    
-    func appendHexEncoding(to target: inout String) {
+    @inlinable func appendHexEncoding(to target: inout String) {
         let encoded = Self.cache[self] ?? {
             var encoded: String
             if let ascii = asciiValue, shouldEncodeForJS {
@@ -38,10 +24,18 @@ private extension Character {
         }()
         target.append(encoded)
     }
+    
+    var shouldEncodeForJS: Bool {
+        if let scalar = unicodeScalars.first,
+           CharacterSet.alphanumerics.contains(scalar) {
+            return false
+        }
+        return true
+    }
 }
 
-private extension UInt8 {
-    var jsHexEncoded: String {
+public extension UInt8 {
+    @inlinable var jsHexEncoded: String {
         "\\x\(String(format: "%02X", self))"
     }
 }

@@ -11,7 +11,7 @@ class EditorTests: XCTestCase {
 
     override func tearDownWithError() throws {
         
-    }    
+    }
 }
 
 class ParsingTests: XCTestCase {
