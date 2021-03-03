@@ -21,6 +21,8 @@
 		B75B3A2325EAA79A0089B2CA /* EditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A2225EAA79A0089B2CA /* EditorTests.swift */; };
 		B7640D8525EC970600261EB4 /* MainAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7640D8425EC970600261EB4 /* MainAppDelegate.swift */; };
 		B7640D8B25EC97C400261EB4 /* ArticleFile+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7640D8A25EC97C400261EB4 /* ArticleFile+Extensions.swift */; };
+		B76ECAD925EF4D9300F7EE7C /* StreamHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76ECAD825EF4D9300F7EE7C /* StreamHelpers.swift */; };
+		B76ECADE25EF4E3B00F7EE7C /* ArticleMetaEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = B76ECADD25EF4E3B00F7EE7C /* ArticleMetaEditor.swift */; };
 		B779656C25EDCBB400D70305 /* EscapingMarkdownConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B779656B25EDCBB400D70305 /* EscapingMarkdownConverter.swift */; };
 		B799A38025ED910500F2C0B1 /* EditorTextViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799A37F25ED910500F2C0B1 /* EditorTextViewCoordinator.swift */; };
 		B799A38425ED9C8900F2C0B1 /* MainEditorModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B799A38325ED9C8900F2C0B1 /* MainEditorModels.swift */; };
@@ -60,6 +62,8 @@
 		B75B3A2425EAA79A0089B2CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B7640D8425EC970600261EB4 /* MainAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppDelegate.swift; sourceTree = "<group>"; };
 		B7640D8A25EC97C400261EB4 /* ArticleFile+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ArticleFile+Extensions.swift"; sourceTree = "<group>"; };
+		B76ECAD825EF4D9300F7EE7C /* StreamHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamHelpers.swift; sourceTree = "<group>"; };
+		B76ECADD25EF4E3B00F7EE7C /* ArticleMetaEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleMetaEditor.swift; sourceTree = "<group>"; };
 		B779656B25EDCBB400D70305 /* EscapingMarkdownConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EscapingMarkdownConverter.swift; sourceTree = "<group>"; };
 		B799A37F25ED910500F2C0B1 /* EditorTextViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTextViewCoordinator.swift; sourceTree = "<group>"; };
 		B799A38325ED9C8900F2C0B1 /* MainEditorModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEditorModels.swift; sourceTree = "<group>"; };
@@ -144,6 +148,7 @@
 				B729C98F25EB930D0042FB1B /* TextEditorPane */,
 				B75B3A1725EA309B0089B2CA /* HTMLPreviewPane */,
 				B7CC17A525EDBAAD0043B1F3 /* MetaView */,
+				B76ECADC25EF4E2A00F7EE7C /* MetaEditor */,
 				B7CC17AC25EDC2B20043B1F3 /* View+Extensions.swift */,
 			);
 			path = Views;
@@ -167,11 +172,28 @@
 			path = EditorTests;
 			sourceTree = "<group>";
 		};
+		B76ECAD725EF4D7200F7EE7C /* CombineUtils */ = {
+			isa = PBXGroup;
+			children = (
+				B76ECAD825EF4D9300F7EE7C /* StreamHelpers.swift */,
+			);
+			path = CombineUtils;
+			sourceTree = "<group>";
+		};
+		B76ECADC25EF4E2A00F7EE7C /* MetaEditor */ = {
+			isa = PBXGroup;
+			children = (
+				B76ECADD25EF4E3B00F7EE7C /* ArticleMetaEditor.swift */,
+			);
+			path = MetaEditor;
+			sourceTree = "<group>";
+		};
 		B77C86FD25E75EA800A939F1 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				B710AC6825E74DA50044B8F4 /* AboutTheLugosEditorApp.swift */,
 				B7640D8425EC970600261EB4 /* MainAppDelegate.swift */,
+				B76ECAD725EF4D7200F7EE7C /* CombineUtils */,
 				B7CC179C25EDB6830043B1F3 /* Managers */,
 				B74FB75825E8E483000AB1F1 /* Views */,
 			);
@@ -324,6 +346,7 @@
 			files = (
 				B74FB75625E8E480000AB1F1 /* PreviewView.swift in Sources */,
 				B7CC17A925EDBCA30043B1F3 /* MetaViewState.swift in Sources */,
+				B76ECAD925EF4D9300F7EE7C /* StreamHelpers.swift in Sources */,
 				B729C99625EB939A0042FB1B /* UIDataModels.swift in Sources */,
 				B7640D8B25EC97C400261EB4 /* ArticleFile+Extensions.swift in Sources */,
 				B710AC6B25E74DA50044B8F4 /* MainEditorView.swift in Sources */,
@@ -333,6 +356,7 @@
 				B7C38AC125E8820C00189689 /* MainEditorState.swift in Sources */,
 				B75B3A1425EA06930089B2CA /* MetaView.swift in Sources */,
 				B7C38AC625E8AA5300189689 /* FileUrlProvider.swift in Sources */,
+				B76ECADE25EF4E3B00F7EE7C /* ArticleMetaEditor.swift in Sources */,
 				B779656C25EDCBB400D70305 /* EscapingMarkdownConverter.swift in Sources */,
 				B729C98C25EB90610042FB1B /* EditorTextView.swift in Sources */,
 				B799A38425ED9C8900F2C0B1 /* MainEditorModels.swift in Sources */,

@@ -19,6 +19,12 @@ extension ArticleFile: Hashable, Equatable, Identifiable {
     }
 }
 
+extension ArticleMeta: Identifiable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
+}
+
 private let LongDateShortTime: DateFormatter = {
     let dateFormatter = DateFormatter()
     dateFormatter.dateStyle = .long

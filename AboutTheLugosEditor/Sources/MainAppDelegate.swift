@@ -5,6 +5,7 @@ import SharedAppTools
 
 enum DelegateError: String, Error {
     case metaSelectedEmptyArticleWithNonNilDirectory
+    case newArticleIdLookupFailed
 }
 
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -12,30 +13,31 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     
     let markdownConverter: EscapingMarkdownConverter
     let resourceManager: ResourceManager
+    let articleLoader: ArticleLoaderComponent
+    let articleCreator: ArticleCreator
     let editorState: MainEditorState
     let metaViewState: MetaViewState
         
     override init() {
+        self.markdownConverter = EscapingMarkdownConverter()
+        
         // directory is a bad idea; maybe compute the child manually.
         // I guess the callback shouldn't do the processing... oof.
+        // Also, 'selected' should probably be published throgh the whole app.
         let root = rootSubDirectory(named: "articles")
         let rootChildren = (try? root.defaultContents()) ?? []
+        let rootDirectory = Directory(root: root, children: rootChildren)
         
-        let articleLoader = ArticleLoaderComponent(rootDirectory: root)
-        resourceManager = ResourceManager(
-            loadingComponent: articleLoader
-        )
+        self.articleCreator = ArticleCreator(rootDirectory: root)
         
-        markdownConverter = EscapingMarkdownConverter()
+        let loader = ArticleLoaderComponent(rootDirectory: root)
+        self.articleLoader = loader
+        self.resourceManager = ResourceManager(loadingComponent: loader)
         
-        editorState = MainEditorState(
-            converter: markdownConverter
-        )
-        editorState.selection = .directory(
-            Directory(root: root, children: rootChildren)
-        )
+        self.editorState = MainEditorState(converter: markdownConverter)
+        editorState.selection = .directory(rootDirectory)
         
-        metaViewState = MetaViewState()
+        self.metaViewState = MetaViewState()
         super.init()
     }
     
@@ -63,6 +65,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         case .success(let directory):
             editorState.selection = .directory(directory)
         case .failure(let error):
+            editorState.receiveError = error
+        }
+    }
+    
+    func newArticleRequested(_ meta: ArticleMeta) {
+        do {
+            try articleCreator.createNew(article: "", with: meta)
+            articleLoader.rootDirectory = articleLoader.rootDirectory
+            guard let created = articleLoader.articleLookup[meta.id] else {
+                throw articleLoader.loadingError ?? DelegateError.newArticleIdLookupFailed
+            }
+            metaViewState.selectedArticle = created
+        } catch {
             editorState.receiveError = error
         }
     }

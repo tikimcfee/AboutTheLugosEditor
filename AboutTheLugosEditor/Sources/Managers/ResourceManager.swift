@@ -36,7 +36,7 @@ public class ResourceManager: ObservableObject {
     
     func sortedArticle(_ list: [ArticleFile]) -> [ArticleFile] {
         list.sorted { left, right in
-            left.meta.postedAt < right.meta.postedAt
+            left.meta.postedAt > right.meta.postedAt
         }
     }
 }
