@@ -10,19 +10,30 @@ enum DelegateError: String, Error {
 class AppDelegate: NSObject, NSApplicationDelegate {
     var cancellables = Set<AnyCancellable>()
     
-    let converter: EscapingMarkdownConverter
-    let resources: ResourceManager
+    let markdownConverter: EscapingMarkdownConverter
+    let resourceManager: ResourceManager
     let editorState: MainEditorState
     let metaViewState: MetaViewState
-    
-    override init() {
-        converter = EscapingMarkdownConverter()
         
-        editorState = MainEditorState(
-            converter: converter
+    override init() {
+        // directory is a bad idea; maybe compute the child manually.
+        // I guess the callback shouldn't do the processing... oof.
+        let root = rootSubDirectory(named: "articles")
+        let rootChildren = (try? root.defaultContents()) ?? []
+        
+        let articleLoader = ArticleLoaderComponent(rootDirectory: root)
+        resourceManager = ResourceManager(
+            loadingComponent: articleLoader
         )
         
-        resources = ResourceManager()
+        markdownConverter = EscapingMarkdownConverter()
+        
+        editorState = MainEditorState(
+            converter: markdownConverter
+        )
+        editorState.selection = .directory(
+            Directory(root: root, children: rootChildren)
+        )
         
         metaViewState = MetaViewState()
         super.init()
@@ -41,7 +52,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             .sink(receiveValue: onSelectionChanged)
             .store(in: &cancellables)
         
-        resources.$currentArticles
+        resourceManager.$currentArticles
             .receive(on: DispatchQueue.main)
             .sink { self.metaViewState.availableArticles = $0 }
             .store(in: &cancellables)
@@ -60,11 +71,11 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         switch selection {
         case .none:
             editorState.editingBody = ""
-            resources.selectedRootDirectory = nil
+            resourceManager.selectedRootDirectory = URL(fileURLWithPath: "")
         case let .directory(directory):
-            resources.selectedRootDirectory = directory.root
+            resourceManager.selectedRootDirectory = directory.root
         case let .directoryArticle(container):
-            resources.selectedRootDirectory = container.directory.root
+            resourceManager.selectedRootDirectory = container.directory.root
             editorState.editingBody = container.originalBody
         }
     }

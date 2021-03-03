@@ -3,37 +3,35 @@ import SharedAppTools
 import Combine
 
 public class ResourceManager: ObservableObject {
-    lazy var component: ArticleLoaderComponent = {
-        let root = rootSubDirectory(named: "articles")
-        let loadingComponent = ArticleLoaderComponent(rootDirectory: root)
-        loadingComponent.onLoadStart = {
-            
-        }
-        loadingComponent.onLoadStop = {
-            self.currentArticles = self.sortedArticle(loadingComponent.currentArticles)
-        }
-        loadingComponent.onLoadError = { error in
-            print(error)
-        }
-        return loadingComponent
-    }()
     
     @Published var currentArticles: [ArticleFile] = []
+    @Published var loadingError: Error? = nil
     
-    var selectedRootDirectory: URL? = nil {
-        didSet {
-            if let url = selectedRootDirectory {
-                component.rootDirectory = url
-            }
-        }
+    private var cancellables = CancelSet()
+    private let loadingComponent: ArticleLoaderComponent
+    
+    var selectedRootDirectory: URL {
+        get { loadingComponent.rootDirectory }
+        set { loadingComponent.rootDirectory = newValue }
     }
     
-    public init() {
-        component.kickoffArticleLoading()
+    public init(loadingComponent: ArticleLoaderComponent) {
+        self.loadingComponent = loadingComponent
+        
+        loadingComponent.$currentArticles
+            .map(sortedArticle)
+            .assign(to: \.currentArticles, on: self)
+            .store(in: &cancellables)
+        
+        loadingComponent.$loadingError
+            .assign(to: \.loadingError, on: self)
+            .store(in: &cancellables)
+        
+        loadingComponent.kickoffArticleLoading()
     }
     
     public subscript(_ id: String) -> ArticleFile? {
-        get { component.articleLookup[id] }
+        get { loadingComponent.articleLookup[id] }
     }
     
     func sortedArticle(_ list: [ArticleFile]) -> [ArticleFile] {

@@ -17,7 +17,7 @@
 		B74533FC25EC1EB90054488B /* ResourceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74533FB25EC1EB90054488B /* ResourceManager.swift */; };
 		B74FB75625E8E480000AB1F1 /* PreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB75525E8E480000AB1F1 /* PreviewView.swift */; };
 		B75B3A1425EA06930089B2CA /* MetaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A1325EA06930089B2CA /* MetaView.swift */; };
-		B75B3A1A25EA31BC0089B2CA /* JavascriptInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */; };
+		B75B3A1A25EA31BC0089B2CA /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A1925EA31BC0089B2CA /* String+Extensions.swift */; };
 		B75B3A2325EAA79A0089B2CA /* EditorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75B3A2225EAA79A0089B2CA /* EditorTests.swift */; };
 		B7640D8525EC970600261EB4 /* MainAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7640D8425EC970600261EB4 /* MainAppDelegate.swift */; };
 		B7640D8B25EC97C400261EB4 /* ArticleFile+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7640D8A25EC97C400261EB4 /* ArticleFile+Extensions.swift */; };
@@ -54,7 +54,7 @@
 		B74533FB25EC1EB90054488B /* ResourceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceManager.swift; sourceTree = "<group>"; };
 		B74FB75525E8E480000AB1F1 /* PreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewView.swift; sourceTree = "<group>"; };
 		B75B3A1325EA06930089B2CA /* MetaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetaView.swift; sourceTree = "<group>"; };
-		B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JavascriptInjection.swift; sourceTree = "<group>"; };
+		B75B3A1925EA31BC0089B2CA /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		B75B3A2025EAA79A0089B2CA /* EditorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EditorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B75B3A2225EAA79A0089B2CA /* EditorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTests.swift; sourceTree = "<group>"; };
 		B75B3A2425EAA79A0089B2CA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -139,6 +139,7 @@
 		B74FB75825E8E483000AB1F1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				B7C38ABF25E881FD00189689 /* SharedModels */,
 				B7D0573425EDC85E00D782E1 /* MainEditorView */,
 				B729C98F25EB930D0042FB1B /* TextEditorPane */,
 				B75B3A1725EA309B0089B2CA /* HTMLPreviewPane */,
@@ -172,19 +173,18 @@
 				B710AC6825E74DA50044B8F4 /* AboutTheLugosEditorApp.swift */,
 				B7640D8425EC970600261EB4 /* MainAppDelegate.swift */,
 				B7CC179C25EDB6830043B1F3 /* Managers */,
-				B7C38ABF25E881FD00189689 /* Models */,
 				B74FB75825E8E483000AB1F1 /* Views */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		B7C38ABF25E881FD00189689 /* Models */ = {
+		B7C38ABF25E881FD00189689 /* SharedModels */ = {
 			isa = PBXGroup;
 			children = (
-				B75B3A1925EA31BC0089B2CA /* JavascriptInjection.swift */,
+				B75B3A1925EA31BC0089B2CA /* String+Extensions.swift */,
 				B729C99525EB939A0042FB1B /* UIDataModels.swift */,
 			);
-			path = Models;
+			path = SharedModels;
 			sourceTree = "<group>";
 		};
 		B7CC179C25EDB6830043B1F3 /* Managers */ = {
@@ -327,7 +327,7 @@
 				B729C99625EB939A0042FB1B /* UIDataModels.swift in Sources */,
 				B7640D8B25EC97C400261EB4 /* ArticleFile+Extensions.swift in Sources */,
 				B710AC6B25E74DA50044B8F4 /* MainEditorView.swift in Sources */,
-				B75B3A1A25EA31BC0089B2CA /* JavascriptInjection.swift in Sources */,
+				B75B3A1A25EA31BC0089B2CA /* String+Extensions.swift in Sources */,
 				B7CC17A225EDB7E20043B1F3 /* PreviewWebViewCoordinator.swift in Sources */,
 				B7CC17AD25EDC2B20043B1F3 /* View+Extensions.swift in Sources */,
 				B7C38AC125E8820C00189689 /* MainEditorState.swift in Sources */,
