@@ -10,16 +10,52 @@ struct MetaView: View {
             info
             Divider().frame(height: 2)
             files
-        }.padding(8)
+        }
+        .padding(8)
+        .sheet(item: $metaState.deleteRequestItem) { article in
+            VStack {
+                Spacer()
+                Text("Delete '\(article.meta.name)'?")
+                Spacer()
+                HStack {
+                    Button("Cancel") {
+                        metaState.deleteRequestItem = nil
+                    }
+                    .keyboardShortcut(.delete)
+                    
+                    Spacer()
+                    
+                    Button("Confirm") {
+                        metaState.requestDelete(article)
+                    }
+                    .keyboardShortcut(.return, modifiers: [.command])
+                }.padding()
+            }
+            .padding()
+            .frame(width: 320, height: 256, alignment: .center)
+        }
     }
     
     private var files: some View {
         List(metaState.availableArticles, selection: $metaState.selectedArticle) { item in
-            makeFileButton(item)
-                .onTapGesture {
+            HStack {
+                makeDeleteButton(item)
+                makeFileButton(item).onTapGesture {
                     metaState.selectedArticle = item
                 }
+            }
         }
+        .listStyle(PlainListStyle())
+        .padding(0)
+    }
+    
+    private func makeDeleteButton(_ item: ArticleFile) -> some View {
+        Image(systemName: "xmark.square.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 24, height: 24)
+            .foregroundColor(Color.red)
+            .onTapGesture { metaState.deleteRequestItem = item }
     }
     
     private func makeFileButton(_ item: ArticleFile) -> some View {
@@ -40,7 +76,11 @@ struct MetaView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(8)
-            .background(Color(red: 0.3, green: 0.3, blue: 0.3, opacity: 0.25))
+            .background(
+                metaState.selectedArticle == item
+                    ? Color(red: 0.3, green: 0.3, blue: 0.8, opacity: 0.25)
+                    : Color(red: 0.3, green: 0.3, blue: 0.3, opacity: 0.25)
+            )
             .cornerRadius(4.0)
         }
     }
@@ -102,11 +142,32 @@ struct MetaView_Previews: PreviewProvider {
         return state
     }()
     
+    static let articleMeta = ArticleMeta(
+        id: "some-id-here",
+        name: "The articleName",
+        summary: "Words summary and then other things that EXTMRELY LONG and worlds and stuffstuffstuff",
+        postedAt: Date().timeIntervalSince1970
+    )
+    
+    static let file = ArticleFile(
+        meta: articleMeta,
+        metaFilePath: URL(string: "google.com")!,
+        articleFilePath: URL(string: "google.com")!
+    )
+    
+    static let creator = ArticleCreator(
+        rootDirectory: URL(string: "apple.com")!
+    )
+    
     static let meta: MetaViewState = {
-        let state = MetaViewState()
-        
+        let state = MetaViewState(creator: creator)
+        state.availableArticles = [
+            file, file, file
+        ]
         return state
     }()
+    
+    static let wrapped = WrappedBinding(file)
     
     static var previews: some View {
         MetaView()

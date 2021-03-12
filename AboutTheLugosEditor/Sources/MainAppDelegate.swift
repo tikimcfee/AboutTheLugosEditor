@@ -14,7 +14,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     let markdownConverter: EscapingMarkdownConverter
     let resourceManager: ResourceManager
     let articleLoader: ArticleLoaderComponent
-    let articleCreator: ArticleCreator
+    var articleCreator: ArticleCreator
     let editorState: MainEditorState
     let metaViewState: MetaViewState
         
@@ -37,7 +37,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.editorState = MainEditorState(converter: markdownConverter)
         editorState.selection = .directory(rootDirectory)
         
-        self.metaViewState = MetaViewState()
+        self.metaViewState = MetaViewState(creator: articleCreator)
         super.init()
     }
     
@@ -63,7 +63,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     func rootDirectorySelected(_ result: DirectoryResult) {
         switch result {
         case .success(let directory):
+            FileManager.default.changeCurrentDirectoryPath(directory.root.path)
             editorState.selection = .directory(directory)
+            articleCreator.rootDirectory = directory.root
+            metaViewState.creator = articleCreator
         case .failure(let error):
             editorState.receiveError = error
         }
@@ -82,6 +85,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
     }
     
+    private func deleteArticleRequested(_ meta: ArticleMeta) {
+        do {
+            try articleCreator.delete(article: meta)
+            articleLoader.rootDirectory = articleLoader.rootDirectory
+            metaViewState.deleteRequestItem = nil
+            metaViewState.deleteError = nil
+        } catch {
+            metaViewState.deleteError = error
+        }
+    }
+    
     private func onSelectionChanged(_ selection: Selection) {
         switch selection {
         case .none:
@@ -89,8 +103,10 @@ class AppDelegate: NSObject, NSApplicationDelegate {
             resourceManager.selectedRootDirectory = URL(fileURLWithPath: "")
         case let .directory(directory):
             resourceManager.selectedRootDirectory = directory.root
+            articleCreator.rootDirectory = directory.root
         case let .directoryArticle(container):
             resourceManager.selectedRootDirectory = container.directory.root
+            articleCreator.rootDirectory = container.directory.root
             editorState.editingBody = container.originalBody
         }
     }

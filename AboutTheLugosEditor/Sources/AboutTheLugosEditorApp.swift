@@ -22,7 +22,8 @@ struct AboutTheLugosEditorApp: App {
                 }
                 .environmentObject(appDelegate.editorState)
                 .environmentObject(appDelegate.metaViewState)
-        }.commands {
+        }
+        .commands {
             CommandGroup(replacing: .newItem) {
                 Button("Select Root Directory") {
                     openDirectory(appDelegate.rootDirectorySelected)
@@ -45,24 +46,12 @@ struct AboutTheLugosEditorApp: App {
                 }
                 .keyboardShortcut("s", modifiers: [.command])
             }
-            CommandGroup(replacing: .help) {
-                
-            }
-            CommandGroup(replacing: .sidebar) {
-                
-            }
-            CommandGroup(replacing: .windowList) {
-                
-            }
-            CommandGroup(replacing: .toolbar) {
-                
-            }
-            CommandGroup(replacing: .printItem) {
-                
-            }
-            CommandGroup(replacing: .importExport) {
-                
-            }
+            CommandGroup(replacing: .help) { }
+            CommandGroup(replacing: .sidebar) { }
+            CommandGroup(replacing: .windowList) { }
+            CommandGroup(replacing: .toolbar) { }
+            CommandGroup(replacing: .printItem) { }
+            CommandGroup(replacing: .importExport) { }
         }
     }
 }

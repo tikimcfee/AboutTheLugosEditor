@@ -20,30 +20,34 @@ struct MainEditorView: View {
     )
     
     var body: some View {
-        HStack {
-            ZStack(alignment: .bottomTrailing) {
-                EditorScrollShareTextView(
-                    text: $editorState.editingBody,
-                    previewScrollPosition: $previewScrollState,
-                    editorScrollPosition: $editorScrollState
-                )
-                Button("Save Changes") {
-                    editorState.saveArticleChangesRequested()
+        HStack(spacing: 0) {
+            HStack(spacing: 0) {
+                ZStack(alignment: .bottomTrailing) {
+                    EditorScrollShareTextView(
+                        text: $editorState.editingBody,
+                        previewScrollPosition: $previewScrollState,
+                        editorScrollPosition: $editorScrollState
+                    )
+                    Button("Save Changes") {
+                        editorState.saveArticleChangesRequested()
+                    }
+                    .disabled(editorState.saveButtonDisabled)
+                    .keyboardShortcut("s", modifiers: [.command])
+                    .padding()
                 }
-                .disabled(editorState.saveButtonDisabled)
-                .keyboardShortcut("s", modifiers: [.command])
-                .padding()
+                Spacer().frame(width: 8)
+                
+                PreviewView(
+                    previewScrollState: $previewScrollState,
+                    editorScrollState: $editorScrollState,
+                    evaluableJavascript: editorState.previewJavascript
+                )
             }
-            
-            Spacer().frame(width: 8)
-            
-            PreviewView(
-                previewScrollState: $previewScrollState,
-                editorScrollState: $editorScrollState,
-                evaluableJavascript: editorState.previewJavascript
-            )
+            .padding(4)
+            .addBorder(Color.gray)
+            .padding(4)
         }
-        .padding()
+        .padding(4)
         .onAppear {
             let dcView = MetaView()
                 .environmentObject(editorState)
@@ -57,6 +61,7 @@ struct MainEditorView: View {
 // MARK: - Previews
 
 #if DEBUG
+import SharedAppTools
 struct ContentView_Previews: PreviewProvider {
     static let test: MainEditorState = {
         let state = MainEditorState(converter: EscapingMarkdownConverter())
@@ -66,14 +71,19 @@ struct ContentView_Previews: PreviewProvider {
         return state
     }()
     
+    static let creator: ArticleCreator = {
+        let creator = ArticleCreator(rootDirectory: URL(string: "google.com")!)
+        return creator
+    }()
+    
     static var previews: some View {
         MainEditorView()
-            .previewLayout(/*@START_MENU_TOKEN@*/.fixed(width: /*@START_MENU_TOKEN@*/910.0/*@END_MENU_TOKEN@*/, height: /*@START_MENU_TOKEN@*/768.0/*@END_MENU_TOKEN@*/)/*@END_MENU_TOKEN@*/)
+            .previewLayout(.fixed(width: 1280, height: 500.0))
             .environmentObject(test)
-            .environmentObject(MetaViewState())
+            .environmentObject(MetaViewState(creator: creator))
         MetaView()
             .environmentObject(test)
-            .environmentObject(MetaViewState())
+            .environmentObject(MetaViewState(creator: creator))
     }
 }
 #endif
